@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: Arial, sans-serif;
+}
+.form-container{
+    width: 20rem;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 1px solid #ccc;
+    background-color: #20909a;
+}
+.form-group{
+    margin-bottom: 1rem;
+}
+.form-group label{
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+.form-group input{
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+}
