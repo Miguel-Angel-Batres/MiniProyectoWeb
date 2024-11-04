@@ -58,18 +58,19 @@ app.post('/login', async (req, res) => {
             name: req.body.username
         });
         if (!check) {
-            res.send('Usuario no encontrado');
+            return res.send('Usuario no encontrado');
         }
         const IsPasswordCorrect = await crypt.compare(req.body.password, check.password);
         if (!IsPasswordCorrect) {
-            res.send('Contraseña incorrecta');
+            return res.send('Contraseña incorrecta');
         }
-        res.redirect('/home');
+        return res.redirect('/home');
     } catch (error) {
         console.error(error);
         res.send('Error al iniciar sesión');
     }
 });
+
 
 
 app.listen(PORT, () => {
