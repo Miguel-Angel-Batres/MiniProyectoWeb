@@ -2,17 +2,14 @@ const express = require('express');
 const path = require('path');
 const crypt = require('bcrypt');
 const collection = require('./config');
-const e = require('express');
 
 const app = express();
 const PORT = 3000;
-//convert data to json path.format
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/', (req, res) => {
@@ -21,63 +18,58 @@ app.get('/', (req, res) => {
 app.get('/signup', (req, res) => {
     res.render('signup');
 })
+app.get('/login', (req, res) => {
+    res.render('login');
+})
+app.get('/home', (req, res) => {
+    res.render('home');
+})
 //register user
 app.post('/signup', async (req, res) => {
     try {
-        
         const data = {
-            email: req.body.email,
+            name: req.body.username,
             password: req.body.password
         };
+
         // consultar si el usuario ya existe
-        const userdata = await collection.findOne({ email: data.email });
+        const userdata = await collection.findOne({ name: data.name });
         if (userdata) {
-            return res.status(400).json({ message: 'Usuario ya existe' });
-        }else{
-        //encriptar contraseña
-        const salt = await crypt.genSalt(10);
-        const hashedPassword = await crypt.hash(data.password, salt);
-        data.password = hashedPassword;
-        //crear usuario
-        const user = new collection(data);
-        const result = await user.save();
-        if (result) {
-            console.log('User registered');
-            res.redirect('/');
+            res.send('Usuario ya registrado');
         } else {
-            console.log('User not registered');
-            res.redirect('/signup');
+            // encriptar contraseña
+            const saltRounds = 10;
+            const hash = await crypt.hash(data.password, saltRounds);
+            data.password = hash;
+
+            await collection.insertMany(data);
+            res.send('Usuario registrado');
         }
-    }   
-    
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error al registrar usuario' });
+        res.send('Error al registrar usuario');
     }
 });
 
-//login user
+
 app.post('/login', async (req, res) => {
-    const data = {
-        email: req.body.email,
-        password: req.body.password
+    try {
+        const check = await collection.findOne({
+            name: req.body.username
+        });
+        if (!check) {
+            res.send('Usuario no encontrado');
+        }
+        const IsPasswordCorrect = await crypt.compare(req.body.password, check.password);
+        if (!IsPasswordCorrect) {
+            res.send('Contraseña incorrecta');
+        }
+        res.redirect('/home');
+    } catch (error) {
+        console.error(error);
+        res.send('Error al iniciar sesión');
     }
-    const userdata = await collection.findOne({ email: data.email });
-    if (userdata) {
-        crypt.compare(data.password, userdata.password, (err, result) => {
-            if (result) {
-                console.log('User logged in');
-                res.redirect('/home');
-            } else {
-                console.log('User not found');
-                res.redirect('/');
-            }
-        })
-    } else {
-        console.log('User not found');
-        res.redirect('/');
-    }
-})
+});
 
 
 app.listen(PORT, () => {
