@@ -24,6 +24,7 @@ app.get('/login', (req, res) => {
 app.get('/home', (req, res) => {
     res.render('home');
 })
+
 //register user
 app.post('/signup', async (req, res) => {
     try {
