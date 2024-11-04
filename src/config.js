@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const uri = 'mongodb+srv://maleficarius:123ferderios45@cluster0.agbh4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const uri = 'mongodb+srv://maleficarius:pepito@cluster0.agbh4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(uri)
     .then(() => console.log("Conectado a MongoDB"))
     .catch((error) => {
