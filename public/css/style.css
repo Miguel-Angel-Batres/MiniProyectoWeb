@@ -36,3 +36,72 @@ h2{
     border: 1px solid #ccc;
     border-radius: 0.3rem;
 }
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #6630ca;
+    padding: 1rem;
+    width: 100%;
+    top: 0;
+    position: fixed;
+}
+.logo{
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    gap: 1rem;
+}
+.logo button{
+    background-color: #fff;
+    color: #6630ca;
+    border: none;
+    height: auto;
+    padding: 0 0.5rem 0 0.5rem; 
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-size: 30px;
+}
+.sidebar {
+    height: 100%;
+    position: fixed;
+    width: 250px;
+    z-index: 1;
+    top: 65px;
+    background-color: #6630ca;
+    transition: 0.5s;
+    left: -250px;
+}
+.sidebar a {
+    display: block;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
+}
+
+.sidebar a:hover {
+    background-color: #7243ca;
+}
+
+.submenu {
+    display: none;
+    background-color: #444;
+}
+
+.submenu a {
+    padding: 1.2rem 2rem;
+    font-size: 1.4rem;
+}
+
+.submenu.open {
+    display: block;
+}
+
+.sidebar.open {
+    left: 0;
+}
