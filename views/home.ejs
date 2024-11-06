@@ -1,18 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home page</title>
-</head>
-<body>
-    <h1>Welcome to the home page</h1>
-    <!-- navbar -->
-    <nav>
-        <ul>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/signup">Sign up</a></li>
-        </ul>
-        
-</body>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script src="/src/sidebar.js"></script>
+  </head>
+  <body>
+    <!-- opcions bar left-->
+    <nav class="navbar">
+       <div class="logo">
+        <h1>Logo</h1>
+        <button id="toggleSidebar">☰</button>
+       </div>
+       
+       <div class="opciones_pagina">
+        <a href="#">Lenguajes</a>
+          <a href="#">Perfil</a>
+       <a href="#">Cerrar Sesion</a>
+       </div>
+    </nav>
+    <div id="sidebar" class="sidebar">
+      <ul>
+        <li>
+          Opción 1
+          <ul class="submenu">
+            <li>Subopción 1</li>
+            <li>Subopción 2</li>
+            <li>Subopción 3</li>
+          </ul>
+        </li>
+        <li>
+          Opción 2
+          <ul class="submenu">
+            <li>Subopción 1</li>
+            <li>Subopción 2</li>
+            <li>Subopción 3</li>
+          </ul>
+        </li>
+        <li>
+          Opción 3
+          <ul class="submenu">
+            <li>Subopción 1</li>
+            <li>Subopción 2</li>
+            <li>Subopción 3</li>
+          </ul>
+        </li>
+        <li>
+          Opción 4
+          <ul class="submenu">
+            <li>Subopción 1</li>
+            <li>Subopción 2</li>
+            <li>Subopción 3</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </body>
 </html>
