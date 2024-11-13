@@ -24,7 +24,15 @@ app.get('/login', (req, res) => {
 app.get('/home', (req, res) => {
     res.render('home');
 })
-
+app.get('/proyectos', (req, res) => {
+    res.render('proyectos');
+})
+app.get('/tasks', (req, res) => {
+    res.render('tasks');
+})  
+app.get('/projects', (req, res) => {
+    res.render('projects');
+})
 //register user
 app.post('/signup', async (req, res) => {
     try {

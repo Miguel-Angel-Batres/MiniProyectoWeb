@@ -7,23 +7,26 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-    <div class="form-container">
-        <h2>Registrarse</h2>
-        <form action="/signup" method="post">
-            <div class="form-group">
-                <label for="name">Nombre:</label>
-                <input type="text" id="name" name="username" placeholder="Ingresa tu nombre.." required autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña.." required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Registrarse</button>
-            </div>
-        </form>
-        <p>Ya tienes cuenta? <a href="/login">Ingresa</a></p>
-
+    <div class="page-container">
+        <div class="form-container">
+            <h2>Registrarse</h2>
+            <form action="/signup" method="post">
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="username" placeholder="Ingresa tu nombre.." required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña.." required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Registrarse</button>
+                </div>
+            </form>
+            <p>Ya tienes cuenta? <a href="/login">Ingresa</a></p>
+    
+        </div>
     </div>
+    
 </body>
 </html>

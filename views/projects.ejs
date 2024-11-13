@@ -93,74 +93,78 @@
       <!-- Sidebar End -->
       <!-- Main -->
       <main class="main-container">
-        <div class="main-title">
-          <h2>DASHBOARD</h2>
-        </div>
-        <div class="main-cards">
-          <div class="card">
-            <div class="card-inner">
-              <h3>PROJECTS</h3>
-              <span class="material-symbols-outlined">inventory_2</span>
+        <div class="project-container">
+          <div class="project-left">
+            <div>
+              <h2>PROJECT</h2>
+              <select id="proyecto-select">
+                <option value="proyecto1">Proyecto 1</option>
+                <option value="proyecto2">Proyecto 2</option>
+                <option value="proyecto3">Proyecto 3</option>
+              </select>
             </div>
-            <h1>249</h1>
-          </div>
-          <div class="card">
-            <div class="card-inner">
-              <h3>TASKS</h3>
-              <span class="material-symbols-outlined">inventory</span>
+            <div class="imageproject-container">
+              <h2>Project Name</h2>
+              <div class="imageproject">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMXl3kgxq5UqoGpnJoDch0Ywf2ggaATCmrkg&s"
+                  alt="project image"
+                />
+              </div>
             </div>
-            <h1>25</h1>
-          </div>
-          <div class="card">
-            <div class="card-inner">
-              <h3>TEAMS</h3>
-              <span class="material-symbols-outlined">groups</span>
+            <div class="projectdescription">
+              <h3>Description</h3>
+              <hr />
+              <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Expedita quas praesentium inventore, vitae assumenda nihil
+                ratione iusto dolorem possimus, est esse. Ducimus pariatur velit
+                ipsa vitae. Ab incidunt sed facere!
+              </p>
+              <h3>In Progress by [team-name]</h3>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s" alt="" style="width: 50px;height: 50px; border-radius: 30px; object-fit: cover; background-color: aqua;">
             </div>
-            <h1>25</h1>
           </div>
-          <div class="card">
-            <div class="card-inner">
-              <h3>REPORTS</h3>
-              <span class="material-symbols-outlined">report</span>
-            </div>
-            <h1>25</h1>
-          </div>
-        </div>
 
-        <div class="main-tasks">
-          <div class="task-header">
-            <div class="task-title">
-              <h2>TASKS</h2>
-            </div>
-            <div class="task-filter">
-              <div class="filterbox" onclick="toggleFilter(this)">
-                <h4>All Tasks</h4>
+          <div class="project-right">
+              
+              <div class="task-header">
+                <div class="task-title">
+                  <h2>TASKS</h2>
+                </div>
+                <div class="task-filter">
+                  <div class="filterbox" onclick="toggleFilter(this)">
+                    <h4>All Tasks</h4>
+                  </div>
+                  <div class="filterbox" onclick="toggleFilter(this)">
+                    <h4>Completed Tasks</h4>
+                  </div>
+                  <div class="filterbox" onclick="toggleFilter(this)">
+                    <h4>Incompleted Tasks</h4>
+                  </div>
+                </div>
               </div>
-              <div class="filterbox" onclick="toggleFilter(this)">
-                <h4>Completed Tasks</h4>
+
+              <div class="task-list">
+                <div class="task">
+                  <div class="task-inner">
+                    <h3>Task 1</h3>
+                    <h4>perfiles</h4>
+                  </div>
+                </div>
+                <div class="task">
+                  <div class="task-inner">
+                    <h3>Task 1</h3>
+                  </div>
+                </div>
+                <div class="task">
+                  <div class="task-inner">
+                    <h3>Task 1</h3>
+                  </div>
+                </div>
               </div>
-              <div class="filterbox" onclick="toggleFilter(this)">
-                <h4>Incompleted Tasks</h4>
-              </div>
-            </div>
-          </div>
-          <div class="task-list">
-            <div class="task">
-              <div class="task-inner">
-                <h3>Task 1</h3>
-                <h4>perfiles</h4>
-              </div>
-            </div>
-            <div class="task">
-              <div class="task-inner">
-                <h3>Task 1</h3>
-              </div>
-            </div>
-            <div class="task">
-              <div class="task-inner">
-                <h3>Task 1</h3>
-              </div>
-            </div>
+
+              
           </div>
         </div>
       </main>

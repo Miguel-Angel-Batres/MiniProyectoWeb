@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home page</title>
+  <!-- CSS -->
+  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="icon" href="data:;base64,=">
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <!-- Material symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script src="src/sidebar.js" defer></script>
+</head>
+
+<body>
+  <div class="grid-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="menu-icon" onclick="openSidebar()">
+        <span class="material-symbols-outlined">menu</span>
+      </div>
+      <div class="header-left">
+        <span class="material-symbols-outlined">search</span>
+      </div>
+      <div class="header-right">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="material-symbols-outlined">email</span>
+        <span class="material-symbols-outlined">account_circle</span>
+
+    </header>
+    <!-- Header End -->
+    <!-- Sidebar  -->
+    <aside id="sidebar">
+        <div class="sidebar-title">
+          <div class="sidebar-brand">
+            <!-- task manager symbol -->
+            <span class="material-symbols-outlined">
+              editor_choice
+            </span>TASKE
+          </div>
+          <span class="material-symbols-outlined" onclick="closeSidebar()">close</span>
+        </div>
+        <ul class="sidebar-list">
+          <li class="sidebar-list-item">
+            <a href="/home">
+              <span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="/tasks">
+              <span class="material-symbols-outlined">inventory</span> Tasks
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="/projects">
+              <span class="material-symbols-outlined">inventory_2</span> Projects
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="teams.html">
+              <span class="material-symbols-outlined">groups</span> Teams
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="reports.html">
+              <span class="material-symbols-outlined">report</span> Reports
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="settings.html">
+              <span class="material-symbols-outlined">settings</span> Settings
+            </a>
+          </li>
+        </ul>
+        
+    </aside>
+    <!-- Sidebar End -->
+    <!-- Main -->
+    <main class="main-container">
+        <div class="projectfilter">
+            <h2>PROJECT</h2>
+            <select id="proyecto-select">
+            <option value="proyecto1">Proyecto 1</option>
+            <option value="proyecto2">Proyecto 2</option>
+            <option value="proyecto3">Proyecto 3</option>
+            </select>
+        </div>
+      <div class="main-tasks">
+        <div class="task-header">
+          <div class="task-title">
+            <h2>TASKS</h2>
+          </div>
+          <div class="task-filter">
+            
+         
+            <div class="filterbox" onclick="toggleFilter(this)">
+              <h4>All Tasks</h4>
+            </div>
+            <div class="filterbox" onclick="toggleFilter(this)">
+              <h4>Completed Tasks</h4>
+            </div>
+            <div class="filterbox" onclick="toggleFilter(this)">
+              <h4>Incompleted Tasks</h4>
+            </div>
+          </div>
+        </div>
+        <div class="task-list">
+          <div class="task">
+            <div class="task-inner">
+              <h3>Task 1</h3>
+              <h4>perfiles</h4>
+            </div>
+          </div>
+          <div class="task">
+            <div class="task-inner">
+              <h3>Task 1</h3>
+
+            </div>
+          </div>
+          <div class="task">
+            <div class="task-inner">
+              <h3>Task 1</h3>
+
+            </div>
+          </div>
+
+        </div>
+
+    </main>
+    <!-- Main End -->
+
+  </div>
+
+</body>
+
+</html>
