@@ -28,7 +28,10 @@ h2 {
     text-align: center;
     margin-bottom: 1rem;
 }
-
+hr {
+    border: 1px solid #3D4450;
+    margin:  0;
+}
 .page-container {
     display: flex;
     justify-content: center;
@@ -245,9 +248,13 @@ h2 {
     padding: 0px 20px;
 
 }
+.filterbox:hover{
+    cursor: pointer;
+}
 
 .filterbox.active {
     background-color: rgb(61, 68, 80);
+    cursor: default;
 }
 
 .task-list {
@@ -262,15 +269,33 @@ h2 {
 
 }
 
-/*------------ projects ------------ */
+/*------------ PROJECTS ------------ */
 .project-container {
     display: grid;
     grid-template-columns: 360px 1fr;
     height: 100%;
 }
+.project-persons{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+.project-admins, .project-members{
+    display: flex;
+    flex-direction: column;
+}
 
-
-
+.project-admins h2, .project-members h2{
+    text-align: left;
+}
+.admin, .member{
+    display: flex;
+    gap: 30px;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid rgb(61, 68, 80);
+}
 .project-left {
     display: flex;
     position: relative;
@@ -301,7 +326,7 @@ h2 {
     text-align: center;
 }
 
-.projectfilter select {
+.projectfilter select, .member-input select, .project-left select {
     appearance: none;
     border: none;
     border-radius: 15px;
@@ -309,19 +334,72 @@ h2 {
     font-size: inherit;
     color: inherit;
     margin: auto 0;
-    background-color: rgb(61, 68, 80);
+    background-color: rgb(53, 95, 168);
 }
 
-.projectfilter select:focus {
+.projectfilter select:focus, .member-input select:focus, .project-left select:focus {
     outline: none;
 }
 
-.projectfilter select option {
+.projectfilter select option, .member-input select option, .project-left select option {
     background-color: rgb(61, 68, 80);
     color: inherit;
 
 }
-
+.addtask-form{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.task-input,.member-input{
+    box-sizing: border-box;
+}
+.member-input{
+    margin: 0 20%;
+}
+.task-input .form-group{
+    display: flex;
+    flex-direction: column;
+    background-color: #263043;
+    border-radius: 30px;
+    padding: 20px 50px;
+}
+.add-task button{
+    width: 100px;
+    padding: 10px;
+    border: none;
+    align-self: center;
+    border-radius: 0.3rem;
+    background-color: #208336;
+    color: inherit;
+    font-size: 1rem;
+    cursor: pointer;    
+}
+.task-input textarea{
+    width: 100%;
+    font-size: 1rem;
+    border: 1px solid #fff;
+    border-radius: 0.3rem;
+}
+.member-input .form-group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background-color: #263043;
+    border-radius: 30px;
+    padding: 20px 0px;
+}
+.memberdelete{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+.memberdelete span{
+    /* icono color rojo */
+    color: #d50000;
+}
 
 /*------------ RESPONSIVO ------------ */
 /* medium <= 992px */
@@ -333,6 +411,10 @@ h2 {
             "header"
             "main";
     }
+    .addtask-form{
+        grid-template-columns: 1fr;
+    
+    }
 
     #sidebar {
         display: none;
@@ -340,6 +422,11 @@ h2 {
 
     .menu-icon {
         display: inline;
+    }
+
+    .filterbox{
+        padding: 0 1vh !important;
+        font-size: 1vh !important;
     }
 
     .sidebar-title>span {
@@ -353,6 +440,17 @@ h2 {
         grid-template-columns: 1fr;
         gap: 10px;
         margin-bottom: 0;
+    }
+    .project-container {
+        display: grid;
+        grid-template-columns: 1fr; /* Una sola columna */
+        overflow-y: auto; /* Scroll único para todo el contenedor */
+        max-height: 100vh; /* Ajusta la altura del contenedor principal */
+        overflow-x: hidden; /* Sin scroll horizontal */
+    }
+    .project-left, .project-right {
+        overflow-y: visible; /* Sin scroll independiente */
+        max-height: none; /* No limitamos la altura de los elementos internos */
     }
 
 

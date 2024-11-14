@@ -74,11 +74,6 @@
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="teams.html">
-              <span class="material-symbols-outlined">groups</span> Teams
-            </a>
-          </li>
-          <li class="sidebar-list-item">
             <a href="reports.html">
               <span class="material-symbols-outlined">report</span> Reports
             </a>
@@ -121,12 +116,71 @@
                 ratione iusto dolorem possimus, est esse. Ducimus pariatur velit
                 ipsa vitae. Ab incidunt sed facere!
               </p>
-              <h3>In Progress by [team-name]</h3>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s" alt="" style="width: 50px;height: 50px; border-radius: 30px; object-fit: cover; background-color: aqua;">
-            </div>
+              </div>
           </div>
 
           <div class="project-right">
+              
+              <!-- Form add tasks -->
+              <div class="add-task">
+                <h2>Add Task</h2>
+                <form action="/addtask" method="post" class="addtask-form">
+                  <div class="task-input">
+                    <div class="form-group">
+                      <label for="taskname">Task Name:</label>
+                      <input
+                        type="text"
+                        id="taskname"
+                        name="taskname"
+                        placeholder="Enter task name.."
+                        required
+                        autocomplete="off"
+                      />
+                    </div>
+                    <div class="form-group
+                      ">
+                      <label for="taskdescription">Task Description:</label>
+                      <textarea
+                        id="taskdescription"
+                        name="taskdescription"
+                        placeholder="Enter task description.."
+                        required
+                      ></textarea>
+                    </div>
+                    <div class="form-group
+                      ">
+                      <button type="submit">Add Task</button>
+                    </div>
+                  </div>
+                  <div class="member-input">
+                    <div class="form-group
+                      ">
+                      <label for="member">Assign Member #:</label>
+                      <div class="memberdelete"><select name="member" id="member">
+                        <option value="member1">Member 1</option>
+                        <option value="member2">Member 2</option>
+                        <option value="member3">Member 3</option>
+                      </select>
+                      <!-- delete option -->
+                      <span class="material-symbols-outlined">delete</span>
+                      </div>
+                      <label for="member">Assign Member #:</label>
+                      <div class="memberdelete"><select name="member" id="member">
+                        <option value="member1">Member 1</option>
+                        <option value="member2">Member 2</option>
+                        <option value="member3">Member 3</option>
+                      </select>
+                      <!-- delete option -->
+                      <span class="material-symbols-outlined">delete</span>
+                      </div>
+                     
+                    <!-- add more members to the task -->
+                    <button type="button">Add Member</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
               
               <div class="task-header">
                 <div class="task-title">
@@ -164,6 +218,34 @@
                 </div>
               </div>
 
+              <div class="project-persons">
+                <div class="project-admins">
+                  <h2>PROJECT ADMINS</h2>
+                  <div class="admin">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s" alt="" style="width: 50px;height: 50px; border-radius: 30px; object-fit: cover; background-color: aqua;">
+                    <h4>Admin Name</h4>
+                  </div>
+                  <div class="admin">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s" alt="" style="width: 50px;height: 50px; border-radius: 30px; object-fit: cover; background-color: aqua;">
+                    <h4>Admin Name</h4>
+                  </div>
+                </div>
+                <div class="project-members">
+                  <h2>PROJECT MEMBERS</h2>
+                  <div class="member">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s" alt="" style="width: 50px;height: 50px; border-radius: 30px; object-fit: cover; background-color: aqua;">
+                    <h4>Member Name</h4>
+                  </div>
+                  <div class="member">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s" alt="" style="width: 50px;height: 50px; border-radius: 30px; object-fit: cover; background-color: aqua;">
+                    <h4>Member Name</h4>
+                  </div>
+                   <div class="member">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s" alt="" style="width: 50px;height: 50px; border-radius: 30px; object-fit: cover; background-color: aqua;">
+                    <h4>Member Name</h4>
+                  </div>
+                </div>
+              </div>
               
           </div>
         </div>
