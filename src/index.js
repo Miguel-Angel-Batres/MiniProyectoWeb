@@ -30,9 +30,9 @@ app.get('/proyectos', (req, res) => {
 app.get('/tasks', (req, res) => {
     res.render('tasks');
 })  
-app.get('/projects', (req, res) => {
-    res.render('projects');
-})
+// app.get('/projects', (req, res) => {
+//     res.render('projects');
+// })
 //register user
 app.post('/signup', async (req, res) => {
     try {
@@ -59,7 +59,17 @@ app.post('/signup', async (req, res) => {
         res.send('Error al registrar usuario');
     }
 });
-
+// select user
+app.get('/projects', async (req, res) => {
+    try {
+        const users = await collection.find({},'name');
+        res.render('projects', { users });
+        
+    } catch (error) {
+        console.error(error);
+        res.send('Error al obtener usuarios');
+    }
+});
 
 app.post('/login', async (req, res) => {
     try {

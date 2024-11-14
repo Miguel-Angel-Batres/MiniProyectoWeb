@@ -178,11 +178,14 @@
                     <div class="memberdelete">
                       <label for="member">Assign Member #:</label>
                       <div>
-                        <select name="member" id="member">
-                          <option value="member1">Member 1</option>
-                          <option value="member2">Member 2</option>
-                          <option value="member3">Member 3</option>
-                        </select>
+                        <select id="select-usuarios">
+                          <option value="">Selecciona un usuario</option>
+                          <!-- Usar EJS para insertar cada usuario como una opción del select -->
+                          <% users.forEach(users => { %>
+                              <option value="<%= users.name %>"><%= users.name %></option>
+                          <% }) %>
+                          </select>
+                  
                         <!-- delete option -->
                         <span class="material-symbols-outlined">delete</span>
                       </div>
