@@ -1,16 +1,38 @@
 const express = require('express');
+const multer = require('multer');
 const path = require('path');
+const session = require('express-session');
 const crypt = require('bcrypt');
-const collection = require('./config');
+const usermodel = require('./models/config');
+const Project = require('./models/project');
 
 const app = express();
 const PORT = 3000;
+app.use(session({
+    secret: 'lol',  
+    resave: false,         
+    saveUninitialized: false, 
+    cookie: { secure: false }  
+}));
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/'); 
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+  
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
     res.render('login');
@@ -19,21 +41,26 @@ app.get('/signup', (req, res) => {
     res.render('signup');
 })
 app.get('/login', (req, res) => {
+    
     res.render('login');
 })
 app.get('/home', (req, res) => {
-    res.render('home');
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }else{
+        return res.render('home');
+    }
 })
-app.get('/proyectos', (req, res) => {
-    res.render('proyectos');
-})
+
 app.get('/tasks', (req, res) => {
-    res.render('tasks');
+    // comprobar si hay session, si no no se puede acceder
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }else{
+        return res.render('tasks');
+    }
 })  
-// app.get('/projects', (req, res) => {
-//     res.render('projects');
-// })
-//register user
+
 app.post('/signup', async (req, res) => {
     try {
         const data = {
@@ -42,7 +69,7 @@ app.post('/signup', async (req, res) => {
         };
 
         // consultar si el usuario ya existe
-        const userdata = await collection.findOne({ name: data.name });
+        const userdata = await usermodel.findOne({ name: data.name });
         if (userdata) {
             res.send('Usuario ya registrado');
         } else {
@@ -51,7 +78,7 @@ app.post('/signup', async (req, res) => {
             const hash = await crypt.hash(data.password, saltRounds);
             data.password = hash;
 
-            await collection.insertMany(data);
+            await usermodel.insertMany(data);
             res.send('Usuario registrado');
         }
     } catch (error) {
@@ -61,9 +88,16 @@ app.post('/signup', async (req, res) => {
 });
 // select user
 app.get('/projects', async (req, res) => {
+    // comprobar si hay session, si no no se puede acceder
+   
+
     try {
-        const users = await collection.find({},'name');
-        res.render('projects', { users });
+        const users = await usermodel.find({},'name');
+        if (!req.session.userId) {
+            return res.redirect('/login');
+        }else{
+            return res.render('proyectos', {users});
+        }
         
     } catch (error) {
         console.error(error);
@@ -73,7 +107,7 @@ app.get('/projects', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
-        const check = await collection.findOne({
+        const check = await usermodel.findOne({
             name: req.body.username
         });
         if (!check) {
@@ -83,6 +117,11 @@ app.post('/login', async (req, res) => {
         if (!IsPasswordCorrect) {
             return res.send('Contraseña incorrecta');
         }
+        // comprobar session con un console log
+        req.session.userId = check._id;
+        console.log(req.session);
+
+
         return res.redirect('/home');
     } catch (error) {
         console.error(error);
@@ -90,6 +129,30 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.post('/createproject', upload.single('projectimage'), async (req, res) => {
+    try {
+        const { projectname, projectdescription, startdate, enddate } = req.body;
+
+        // Crear el nuevo proyecto usando el modelo Project
+        const newProject = new Project({
+            name: projectname,
+            description: projectdescription,
+            startDate: new Date(startdate),
+            endDate: new Date(enddate),
+            createdAt: new Date(),
+            userId: req.session.userId,  // El id del usuario en la sesión
+            image: req.file ? `/uploads/${req.file.filename}` : null  // Si hay una imagen, usar su nombre de archivo
+        });
+
+        // Guardar el nuevo proyecto en la base de datos
+        await newProject.save();
+        res.redirect('/projects');  // Redirigir a la página de proyectos
+
+    } catch (error) {
+        console.error(error);
+        res.send('Error al crear proyecto');
+    }
+});
 
 
 app.listen(PORT, () => {

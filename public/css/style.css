@@ -39,7 +39,7 @@ hr {
 }
 
 .form-container {
-    width: 20rem;
+    width: 30rem;
     padding: 50px;
     border: 1px solid #fff;
     border-radius: 0.5rem;
@@ -47,24 +47,53 @@ hr {
 }
 
 .form-group {
+    background-color: #263043;
+    display: grid;
+    grid-template-columns: 20% 60%;
+    gap: 10px;
     margin-bottom: 1rem;
+    border-radius: 30px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 50px;
 }
-
+.form-group > *{
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+}
 .form-group label {
-    display: block;
-    width: 80%;
     font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+   
 }
-
-.form-group input {
+.center-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+}
+.evenly{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.form-group input, .form-group textarea{
     width: 100%;
     padding: 0.5rem 0 0.5rem 0;
     font-size: 1rem;
-    border: 1px solid #fff;
     border-radius: 0.3rem;
 }
 
+.form-group textarea{
+    width: 100%;
+    resize: none;
+    
+}
+.column-form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
 .grid-container {
     display: grid;
@@ -164,7 +193,7 @@ hr {
 
 .main-container {
     grid-area: main;
-    overflow-y: auto;
+    overflow-y: hidden;
     padding: 20px 20px;
     color: rgba(255, 255, 255, 0.95);
 }
@@ -172,6 +201,7 @@ hr {
 .main-title {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .main-cards {
@@ -293,9 +323,25 @@ hr {
 
 /*------------ PROJECTS ------------ */
 .project-container {
+    position: relative;
     display: grid;
     grid-template-columns: 30% 70%;
     height: 100%;
+    top:0;
+    transition: all 0.8s;
+}
+.create-project-container{
+    position: relative;
+    top: 100%;
+    height: 100%;
+    transition: all 1s;
+}
+.create-project-container.active{
+    top: -100%;
+}
+.project-container.inactive {
+    visibility: hidden;
+    top: -100%;
 }
 .project-persons{
     display: grid;
@@ -330,7 +376,7 @@ hr {
 }
 .project-right{
     gap: 20px;
-    padding: 20px 50px;
+    padding: 20px 30px;
     overflow-y: auto;
 }
 .imageproject-container {
@@ -372,7 +418,7 @@ select option{
 
 .addtask-form{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 60% 40%;
     gap: 10px;
 }
 .task-input,.member-input{
@@ -385,49 +431,19 @@ select option{
     margin-top: 2px;
     gap: 10px;
 }
-.member-input .form-group{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background-color: #263043;
-    border-radius: 30px;
-    padding: 20px 0px;
-}
-.member-input .form-group-button {
 
-    display: flex;
-    justify-content: center;
-    background-color: #263043;
-    border-radius: 30px;
-    padding: 20px 0px;
-
-}
-.task-input .form-group{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    background-color: #263043;
-    border-radius: 30px;
-    padding: 30px;
-}
-.task-input .input{
-    width: 100%;
-    font-size: 1rem;
-    border-radius: 0.3rem;
-
-}
-.add-task button{
-    width: 100px;
+button{
     padding: 10px;
+    text-align: center;
     border: none;
-    align-self: center;
-    border-radius: 0.3rem;
+    border-radius: 0.4rem;
     background-color: #208336;
     color: inherit;
     font-size: 1rem;
     cursor: pointer;    
     transition: all 0.3s;
 }
+
 .add-task {
     display:none;
     
@@ -443,33 +459,17 @@ select option{
     background-color: #1a6c2e;
     transform: scale(1.1);
 }
-.task-input textarea{
-    width: 100%;
-    font-size: 1rem;
-    border: 1px solid #fff;
-    border-radius: 0.3rem;
-    /* no width editable */
-    resize: none;
-    height: 100px;
-}
+
 
 .task-cuadro .task-list-header{
     display: none;
 }
-.member-input .form-group{
-    padding: 20px;
-    
-}
-.memberdelete{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-}
-.memberdelete span{
-    /* icono color rojo */
-    color: #d50000;
+
+
+.create-project-form{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 
 /*------------ RESPONSIVO ------------ */
@@ -508,6 +508,12 @@ select option{
     }
     .sidebar-title>span {
         display: inline;
+    }
+    .create-project-form{
+        grid-template-columns: 1fr;
+    }   
+    .create-project-container{
+        overflow-y: auto;
     }
 }
 @media screen and (max-width:870px) {
@@ -553,7 +559,7 @@ select option{
         background-color: #2a374b;
 
     }
-
+    
     
 }
 /* small <= 768px */

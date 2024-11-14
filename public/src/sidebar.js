@@ -36,3 +36,16 @@ function desactivetaskform(){
     document.getElementById('addtask-button').style.display = 'block';
     document.getElementById('add-task').style.display = 'none';
 }
+
+function activeprojectform(){
+    div2 = document.getElementById('create-project-container');
+    div1 = document.getElementById('project-container');
+    div2.classList.add('active');
+    div1.classList.add('inactive');
+}
+function desactiveprojectform(){
+    div2 = document.getElementById('create-project-container');
+    div1 = document.getElementById('project-container');
+    div2.classList.remove('active');
+    div1.classList.remove('inactive');
+}

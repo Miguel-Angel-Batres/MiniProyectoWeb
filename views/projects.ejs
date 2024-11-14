@@ -88,10 +88,14 @@
       <!-- Sidebar End -->
       <!-- Main -->
       <main class="main-container">
-        <div class="project-container">
+        <div class="project-container" id="project-container">
           <div class="project-left">
             <div>
-              <h2>PROJECT</h2>
+              <div class="task-title">
+                <h2>PROJECT</h2>
+                <span class="material-symbols-outlined" style="color:  green;" onclick="activeprojectform()">add</span>
+              </div>
+
               <select id="proyecto-select">
                 <option value="proyecto1">Proyecto 1</option>
                 <option value="proyecto2">Proyecto 2</option>
@@ -134,8 +138,7 @@
 
               <form action="/addtask" method="post" class="addtask-form">
                 <div class="task-input">
-                  <div class="form-group flex-row">
-                    <div class="input">
+                    <div class="form-group">
                       <label for="taskname">Task Name:</label>
                       <input
                         type="text"
@@ -146,20 +149,12 @@
                         autocomplete="off"
                       />
                     </div>
-                    <div class="input">
+                    <div class="form-group">
                       <label for="enddate">End Date:</label>
                       <input type="date" id="enddate" name="enddate" required />
                     </div>
-                    <!-- priority -->
-                    <div>
-                      <label for="priority">Priority:</label>
-                      <select name="priority" id="priority">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                      </select>
-                    </div>
-                  </div>
+                    
+                
                   <div class="form-group">
                     <label for="taskdescription">Task Description:</label>
                     <textarea
@@ -169,43 +164,44 @@
                       required
                     ></textarea>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group evenly">
+                    <!-- priority -->
+                    <div class="center-form">
+                      <label for="priority">Priority:</label>
+                      <select name="priority" id="priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </div>
                     <button type="submit">Add Task</button>
                   </div>
                 </div>
                 <div class="member-input">
-                  <div class="form-group">
-                    <div class="memberdelete">
-                      <label for="member">Assign Member #:</label>
-                      <div>
-                        <select id="select-usuarios">
-                          <option value="">Selecciona un usuario</option>
-                          <!-- Usar EJS para insertar cada usuario como una opción del select -->
-                          <% users.forEach(users => { %>
-                              <option value="<%= users.name %>"><%= users.name %></option>
-                          <% }) %>
-                          </select>
-                  
-                        <!-- delete option -->
-                        <span class="material-symbols-outlined">delete</span>
+                    <div class="colum-form">
+                      <div class="form-group center-form">
+                        <div class="column-form">
+                          <label for="member">Assign Member #:</label>
+                          <div class="evenly">
+                            <input type="text" id="search-usuarios" placeholder="Buscar usuario..." list="usuarios-list">
+                            <datalist id="usuarios-list">
+                              <% users.forEach(user => { %>
+                                  <option value="<%= user.name %>"><%= user.name %></option>
+                              <% }) %>
+                            </datalist>
+                            <span class="material-symbols-outlined">delete</span>
+                          </div>
+                        </div>
+                        <div class="column-form">
+
+                        </div>
+                      </div>
+                      
+                      <div class="form-group center-form">
+                        <button type="submit">Add Member</button>
                       </div>
                     </div>
-                    <div class="memberdelete">
-                      <label for="member">Assign Member #:</label>
-                      <div>
-                        <select name="member" id="member">
-                          <option value="member1">Member 1</option>
-                          <option value="member2">Member 2</option>
-                          <option value="member3">Member 3</option>
-                        </select>
-                        <!-- delete option -->
-                        <span class="material-symbols-outlined">delete</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group-button">
-                    <button type="submit">Add Member</button>
-                  </div>
+                                  
                 </div>
               </form>
             </div>
@@ -394,6 +390,67 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="create-project-container" id="create-project-container">
+            <div class="main-title">
+              <div></div>
+              <h2>Create Project</h2>
+              <span
+                class="material-symbols-outlined"
+                onclick="desactiveprojectform()"
+                style="color: red"
+                >cancel</span>
+            </div>
+            <form action="/createproject" method="post" class="create-project-form">
+              <div>
+                <div class="form-group">
+                  <label for="projectname">Project Name:</label>
+                  <input
+                    type="text"
+                    id="projectname"
+                    name="projectname"
+                    placeholder="Enter project name.."
+                    required
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="projectdescription">Project Description:</label>
+                  <textarea
+                    id="projectdescription"
+                    name="projectdescription"
+                    placeholder="Enter project description.."
+                    required
+                  ></textarea>
+                </div>
+                <!-- Dates -->
+                <div class="form-group evenly">
+                  <div class="center-form">
+                    <label for="enddate">End Date:</label>
+                    <input type="date" id="enddate" name="enddate" required />
+                  </div>
+                  <div class="center-form">
+                    <label for="startdate">Start Date:</label>
+                    <input type="date" id="startdate" name="startdate" required />
+                  </div>
+                </div>
+                <div class="form-group center-form">
+                  <button type="submit">Create Project</button>
+                </div>
+                
+              </div>
+              <div class="create-project-image">
+                <div class="form-group center-form">
+                  <img src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg" alt="" style="width: 300px; height: 300px; border-radius: 150px; ">
+                </div>
+                 <div class="form-group">
+                  <label for="projectimage">Project Logo:</label>
+                  <input type="file" id="projectimage" name="projectimage" accept="image/*" required />
+                 </div>
+                 
+              </div>
+            </form>
           </div>
         </div>
       </main>
