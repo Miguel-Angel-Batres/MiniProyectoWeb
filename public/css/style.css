@@ -571,14 +571,14 @@ button{
     }
     .project-container {
         display: grid;
-        grid-template-columns: 1fr; /* Una sola columna */
-        overflow-y: auto; /* Scroll único para todo el contenedor */
-        max-height: 100vh; /* Ajusta la altura del contenedor principal */
-        overflow-x: hidden; /* Sin scroll horizontal */
+        grid-template-columns: 1fr; 
+        overflow-y: auto; 
+        max-height: 100vh; 
+        overflow-x: hidden; 
     }
     .project-left, .project-right {
-        overflow-y: visible; /* Sin scroll independiente */
-        max-height: none; /* No limitamos la altura de los elementos internos */
+        overflow-y: visible; 
+        max-height: none; 
     }
 
 
