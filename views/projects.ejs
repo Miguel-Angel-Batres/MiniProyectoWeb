@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home page</title>
+    <title>TASKE</title>
     <!-- CSS -->
     <link
       rel="preload"
@@ -134,7 +134,7 @@
 
               <form action="/addtask" method="post" class="addtask-form">
                 <div class="task-input">
-                  <div class="form-group flex-row">                   
+                  <div class="form-group flex-row">
                     <div class="input">
                       <label for="taskname">Task Name:</label>
                       <input
@@ -148,12 +148,7 @@
                     </div>
                     <div class="input">
                       <label for="enddate">End Date:</label>
-                      <input
-                        type="date"
-                        id="enddate"
-                        name="enddate"
-                        required
-                      />
+                      <input type="date" id="enddate" name="enddate" required />
                     </div>
                     <!-- priority -->
                     <div>
@@ -165,7 +160,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group ">
+                  <div class="form-group">
                     <label for="taskdescription">Task Description:</label>
                     <textarea
                       id="taskdescription"
@@ -174,7 +169,7 @@
                       required
                     ></textarea>
                   </div>
-                  <div class="form-group ">
+                  <div class="form-group">
                     <button type="submit">Add Task</button>
                   </div>
                 </div>
@@ -216,13 +211,13 @@
                 <div class="task-title">
                   <h2>TASKS</h2>
                   <!-- add task button -->
-                <span
-                class="material-symbols-outlined"
-                style="color: green"
-                id="addtask-button"
-                onclick="activetaskform(this)"
-                >add</span
-              >
+                  <span
+                    class="material-symbols-outlined"
+                    style="color: green"
+                    id="addtask-button"
+                    onclick="activetaskform(this)"
+                    >add</span
+                  >
                 </div>
                 <div class="task-filter">
                   <div class="filterbox" onclick="toggleFilter(this)">
@@ -237,7 +232,7 @@
                 </div>
               </div>
               <div class="task-list">
-                <div id="column_guide" class="task-list-header" >
+                <div id="column_guide" class="task-list-header">
                   <h3>Task</h3>
                   <div class="task-list-header-right">
                     <h3>End Date</h3>
@@ -248,7 +243,7 @@
                   </div>
                 </div>
                 <div class="task-cuadro">
-                  <div class="task-list-header" >
+                  <div class="task-list-header">
                     <h3>Task</h3>
                     <div class="task-list-header-right">
                       <h3>End Date</h3>
@@ -317,7 +312,6 @@
                 </div>
               </div>
             </div>
-            
 
             <div class="project-persons">
               <div class="project-admins">
