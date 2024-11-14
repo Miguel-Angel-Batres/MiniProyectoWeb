@@ -26,3 +26,13 @@ function toggleFilter(element){
     });
     element.classList.add('active');
 }
+
+function activetaskform(element){
+    element.style.display = 'none';
+    document.getElementById('add-task').style.display = 'block';
+}
+
+function desactivetaskform(){
+    document.getElementById('addtask-button').style.display = 'block';
+    document.getElementById('add-task').style.display = 'none';
+}
