@@ -96,25 +96,32 @@
                 <span class="material-symbols-outlined" style="color:  green;" onclick="activeprojectform()">add</span>
               </div>
 
-              <select id="proyecto-select">
-                <option value="proyecto1">Proyecto 1</option>
-                <option value="proyecto2">Proyecto 2</option>
-                <option value="proyecto3">Proyecto 3</option>
-              </select>
+              <select id="projectselect">
+                <% projects.forEach(function(project) { %>
+                  <option value="<%= project._id %>"
+                          data-name="<%= project.name %>"
+                          data-image="<%= project.image %>"
+                          data-description="<%= project.description %>">
+                      <%= project.name %>
+                  </option>
+               <% }); %>
+               </select>
             </div>
             <div class="imageproject-container">
-              <h2>Project Name</h2>
+              <h2 id="projectname">Project Name</h2>
               <div class="imageproject">
                 <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMXl3kgxq5UqoGpnJoDch0Ywf2ggaATCmrkg&s"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
                   alt="project image"
+                  id="mainprojectimage"
                 />
               </div>
             </div>
             <div class="projectdescription">
+               <!-- put description from projects collection -->
               <h3>Description</h3>
               <hr />
-              <p>
+              <p id="projectdescription">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                 Expedita quas praesentium inventore, vitae assumenda nihil
                 ratione iusto dolorem possimus, est esse. Ducimus pariatur velit
@@ -402,7 +409,7 @@
                 style="color: red"
                 >cancel</span>
             </div>
-            <form action="/createproject" method="post" class="create-project-form">
+            <form action="/createproject" method="post" class="create-project-form" enctype="multipart/form-data">
               <div>
                 <div class="form-group">
                   <label for="projectname">Project Name:</label>
@@ -442,11 +449,11 @@
               </div>
               <div class="create-project-image">
                 <div class="form-group center-form">
-                  <img src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg" alt="" style="width: 300px; height: 300px; border-radius: 150px; ">
+                  <img src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg" alt="" style="width: 300px; height: 300px; border-radius: 150px; " id="projectimage">
                 </div>
                  <div class="form-group">
                   <label for="projectimage">Project Logo:</label>
-                  <input type="file" id="projectimage" name="projectimage" accept="image/*" required />
+                  <input type="file" id="projectimagefile" name="projectimage" accept="image/*" required />
                  </div>
                  
               </div>

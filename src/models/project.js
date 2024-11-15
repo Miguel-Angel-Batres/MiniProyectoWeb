@@ -7,7 +7,7 @@ const projectSchema = new mongoose.Schema({
   endDate: { type: Date, required: true },
   createdAt: { type: Date, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  image: { type: String, required: false }  
+  image: { type: String, required: true }  
 });
 
 const Project = mongoose.model('Project', projectSchema);

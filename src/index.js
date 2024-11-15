@@ -14,16 +14,8 @@ app.use(session({
     saveUninitialized: false, 
     cookie: { secure: false }  
 }));
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/'); 
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
 
-const upload = multer({ storage: storage });
+const upload = multer({ dest : 'uploads/' });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.get('/', (req, res) => {
     res.render('login');
@@ -93,10 +85,11 @@ app.get('/projects', async (req, res) => {
 
     try {
         const users = await usermodel.find({},'name');
+        const projects = await Project.find({}, 'name description startDate endDate createdAt userId image');
         if (!req.session.userId) {
             return res.redirect('/login');
         }else{
-            return res.render('proyectos', {users});
+            return res.render('projects', {users, projects});
         }
         
     } catch (error) {
@@ -133,20 +126,18 @@ app.post('/createproject', upload.single('projectimage'), async (req, res) => {
     try {
         const { projectname, projectdescription, startdate, enddate } = req.body;
 
-        // Crear el nuevo proyecto usando el modelo Project
         const newProject = new Project({
             name: projectname,
             description: projectdescription,
             startDate: new Date(startdate),
             endDate: new Date(enddate),
             createdAt: new Date(),
-            userId: req.session.userId,  // El id del usuario en la sesión
-            image: req.file ? `/uploads/${req.file.filename}` : null  // Si hay una imagen, usar su nombre de archivo
+            userId: req.session.userId,  
+            image: req.file ? `/uploads/${req.file.filename}` : null  
         });
 
-        // Guardar el nuevo proyecto en la base de datos
         await newProject.save();
-        res.redirect('/projects');  // Redirigir a la página de proyectos
+        res.redirect('/projects');  
 
     } catch (error) {
         console.error(error);
