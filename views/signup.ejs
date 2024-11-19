@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign up</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+  
 </head>
 <body>
     <div class="page-container">
         <div class="form-container">
             <h2>Registrarse</h2>
-            <form action="/signup" method="post">
+            <form action="/signup" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Nombre:</label>
                     <input type="text" id="name" name="username" placeholder="Ingresa tu nombre.." required autocomplete="off">
@@ -20,6 +21,18 @@
                     <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña.." required>
                 </div>
                 <div class="form-group center-form">
+                    <img
+                    src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg"
+                    alt=""
+                    style="width: 300px; height: 300px; border-radius: 150px"
+                    id="userimg"
+                    />
+                </div>
+                <div class="form-group center-form">
+                    <label for="image">Imagen:</label>
+                    <input type="file" id="userimgfile" name="userimg" required>
+                </div>
+                <div class="form-group center-form">
                     <button type="submit">Registrarse</button>
                 </div>
             </form>
@@ -27,6 +40,19 @@
     
         </div>
     </div>
-    
+    <script>
+        document.getElementById('userimgfile').addEventListener('change', function(){
+        const file = this.files[0];
+        if(file)
+        {
+         const reader = new FileReader();
+         reader.onload = function(){
+              const img = document.getElementById('userimg');
+              img.src = reader.result;
+         }
+         reader.readAsDataURL(file);
+    }
+});
+    </script>
 </body>
 </html>

@@ -15,9 +15,13 @@ const schema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    img: {
+        type: String,
+        required: true
     }
 });
 
-const usermodel = new mongoose.model('users', schema);
+const usermodel = new mongoose.model('User', schema);
 
 module.exports = usermodel;

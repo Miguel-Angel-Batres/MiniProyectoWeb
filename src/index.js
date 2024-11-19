@@ -5,6 +5,7 @@ const session = require('express-session');
 const crypt = require('bcrypt');
 const usermodel = require('./models/config');
 const Project = require('./models/project');
+const Task = require('./models/tasks');
 
 const app = express();
 const PORT = 3000;
@@ -53,11 +54,12 @@ app.get('/tasks', (req, res) => {
     }
 })  
 
-app.post('/signup', async (req, res) => {
+app.post('/signup',upload.single('userimg'), async (req, res) => {
     try {
         const data = {
             name: req.body.username,
-            password: req.body.password
+            password: req.body.password,
+            img: req.file ? `/uploads/${req.file.filename}` : null  
         };
 
         // consultar si el usuario ya existe
@@ -78,18 +80,18 @@ app.post('/signup', async (req, res) => {
         res.send('Error al registrar usuario');
     }
 });
-// select user
 app.get('/projects', async (req, res) => {
-    // comprobar si hay session, si no no se puede acceder
-   
 
     try {
-        const users = await usermodel.find({},'name');
-        const projects = await Project.find({}, 'name description startDate endDate createdAt userId image');
+        const users = await usermodel.find({},'_id name ');
+        const projects = await Project.find({}, 'name description startDate endDate createdAt creatorUserid assignedUsers image')
+        .populate('assignedUsers.userId', '_id name img');
+        const tasks = await Task.find({}, 'name description enddate priority projectId assignedUsers');
+        
         if (!req.session.userId) {
             return res.redirect('/login');
         }else{
-            return res.render('projects', {users, projects});
+            return res.render('projects', {users, projects, tasks});
         }
         
     } catch (error) {
@@ -110,9 +112,7 @@ app.post('/login', async (req, res) => {
         if (!IsPasswordCorrect) {
             return res.send('Contraseña incorrecta');
         }
-        // comprobar session con un console log
         req.session.userId = check._id;
-        console.log(req.session);
 
 
         return res.redirect('/home');
@@ -125,6 +125,22 @@ app.post('/login', async (req, res) => {
 app.post('/createproject', upload.single('projectimage'), async (req, res) => {
     try {
         const { projectname, projectdescription, startdate, enddate } = req.body;
+        const assignedUsers = req.body.usuarios;
+
+        const userArray = Array.isArray(assignedUsers) ? assignedUsers : [assignedUsers];
+
+        const assignedUsersWithRoles = [
+           
+            ...userArray.map(userId => ({
+                userId,
+                role: 'miembro'  // El resto de los usuarios son "miembro"
+            })),
+            {
+                userId: req.session.userId, // El creador del proyecto
+                role: 'admin'
+            }
+        ];
+
 
         const newProject = new Project({
             name: projectname,
@@ -132,8 +148,9 @@ app.post('/createproject', upload.single('projectimage'), async (req, res) => {
             startDate: new Date(startdate),
             endDate: new Date(enddate),
             createdAt: new Date(),
-            userId: req.session.userId,  
-            image: req.file ? `/uploads/${req.file.filename}` : null  
+            creatorUserId: req.session.userId,
+            assignedUsers: assignedUsersWithRoles, 
+            image: req.file ? `/uploads/${req.file.filename}` : null
         });
 
         await newProject.save();
@@ -145,8 +162,50 @@ app.post('/createproject', upload.single('projectimage'), async (req, res) => {
     }
 });
 
+app.post('/createtask', async (req, res) => {
+    try {
+        const { taskname, priority, taskdescription, taskdate, projectId } = req.body;
+        const assignedUsers = req.body.search_usuarios;
+        
+        const userArray = Array.isArray(assignedUsers) ? assignedUsers : [assignedUsers];
 
+        const newTask = new Task({
+            name: taskname,
+            description: taskdescription,
+            enddate: new Date(taskdate),
+            priority: priority,
+            projectId: projectId,
+            assignedUsers: userArray,
+        });
+
+        await newTask.save();
+        res.redirect('/tasks');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al crear tarea');
+    }
+});
+app.get('/tasks/:projectId', async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        const tasks = await Task.find({ projectId }).populate('assignedUsers', 'name img');
+        res.json(tasks);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener tareas');
+    }
+});
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
+app.get('/members/:projectId', async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        const project = await  Project.findById(projectId).populate('assignedUsers.userId', 'name img');
+        res.json(project.assignedUsers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener miembros');
+    }
+});

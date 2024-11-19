@@ -25,7 +25,7 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
-    <script src="src/sidebar.js" defer></script>
+    <script src="src/projectfunctions.js" defer></script>
   </head>
 
   <body>
@@ -87,38 +87,44 @@
       </aside>
       <!-- Sidebar End -->
       <!-- Main -->
-      <main class="main-container">
+      <main class="main-container" id="main_container">
         <div class="project-container" id="project-container">
           <div class="project-left">
             <div>
               <div class="task-title">
                 <h2>PROJECT</h2>
-                <span class="material-symbols-outlined" style="color:  green;" onclick="activeprojectform()">add</span>
+                <span
+                  class="material-symbols-outlined"
+                  style="color: green"
+                  onclick="activeprojectform()"
+                  >add</span
+                >
               </div>
-
               <select id="projectselect">
-                <% projects.forEach(function(project) { %>
-                  <option value="<%= project._id %>"
-                          data-name="<%= project.name %>"
-                          data-image="<%= project.image %>"
-                          data-description="<%= project.description %>">
-                      <%= project.name %>
-                  </option>
-               <% }); %>
-               </select>
+                <% projects.forEach(project => { %>
+                <option
+                  value="<%= project._id %>"
+                  data-image="<%= project.image %>"
+                  data-description="<%= project.description %>"
+                  data-name="<%= project.name %>"
+                  >
+                  <%= project.name %>
+                </option>
+                <% }); %>
+              </select>
             </div>
             <div class="imageproject-container">
               <h2 id="projectname">Project Name</h2>
               <div class="imageproject">
                 <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
+                  src=""
                   alt="project image"
                   id="mainprojectimage"
                 />
               </div>
             </div>
             <div class="projectdescription">
-               <!-- put description from projects collection -->
+              <!-- put description from projects collection -->
               <h3>Description</h3>
               <hr />
               <p id="projectdescription">
@@ -143,25 +149,25 @@
                 >
               </div>
 
-              <form action="/addtask" method="post" class="addtask-form">
+              <form action="/createtask" method="post" class="addtask-form">
+                <input type="hidden" name="projectId" id="projectTask" />
                 <div class="task-input">
-                    <div class="form-group">
-                      <label for="taskname">Task Name:</label>
-                      <input
-                        type="text"
-                        id="taskname"
-                        name="taskname"
-                        placeholder="Enter task name.."
-                        required
-                        autocomplete="off"
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label for="enddate">End Date:</label>
-                      <input type="date" id="enddate" name="enddate" required />
-                    </div>
-                    
-                
+                  <div class="form-group">
+                    <label for="taskname">Task Name:</label>
+                    <input
+                      type="text"
+                      id="taskname"
+                      name="taskname"
+                      placeholder="Enter task name.."
+                      required
+                      autocomplete="off"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="enddate">End Date:</label>
+                    <input type="date" id="enddate" name="taskdate" required />
+                  </div>
+
                   <div class="form-group">
                     <label for="taskdescription">Task Description:</label>
                     <textarea
@@ -184,31 +190,17 @@
                     <button type="submit">Add Task</button>
                   </div>
                 </div>
-                <div class="member-input">
-                    <div class="colum-form">
-                      <div class="form-group center-form">
-                        <div class="column-form">
-                          <label for="member">Assign Member #:</label>
-                          <div class="evenly">
-                            <input type="text" id="search-usuarios" placeholder="Buscar usuario..." list="usuarios-list">
-                            <datalist id="usuarios-list">
-                              <% users.forEach(user => { %>
-                                  <option value="<%= user.name %>"><%= user.name %></option>
-                              <% }) %>
-                            </datalist>
-                            <span class="material-symbols-outlined">delete</span>
-                          </div>
-                        </div>
-                        <div class="column-form">
-
-                        </div>
-                      </div>
-                      
-                      <div class="form-group center-form">
-                        <button type="submit">Add Member</button>
-                      </div>
+                <div class="member-input" id="member_input">
+                  <div class="form-group center-form">
+                    <button onclick="addmember()" type="button">
+                      Add Member
+                    </button>
+                  </div>
+                  <div class="form-group center-form" id="members_formgroup">
+                    <div class="dynamic-grid">
+                     
                     </div>
-                                  
+                  </div>
                 </div>
               </form>
             </div>
@@ -237,229 +229,161 @@
                   </div>
                 </div>
               </div>
-              <div class="task-list">
+              <div class="task-list" id="taskList">
                 <div id="column_guide" class="task-list-header">
                   <h3>Task</h3>
                   <div class="task-list-header-right">
                     <h3>End Date</h3>
                     <h3>Status</h3>
                     <h3>Priority</h3>
-                    <h3>Progress</h3>
                     <h3>Assignees</h3>
-                  </div>
-                </div>
-                <div class="task-cuadro">
-                  <div class="task-list-header">
-                    <h3>Task</h3>
-                    <div class="task-list-header-right">
-                      <h3>End Date</h3>
-                      <h3>Status</h3>
-                      <h3>Priority</h3>
-                      <h3>Progress</h3>
-                      <h3>Assignees</h3>
-                    </div>
-                  </div>
-                  <div class="task">
-                    <h4>task 1</h4>
-                    <div class="task-inner">
-                      <!-- end date -->
-                      <h4>end date</h4>
-                      <div class="task-status">
-                        <h4>not started</h4>
-                      </div>
-                      <div class="task-priority">
-                        <h4>low</h4>
-                      </div>
-                      <div class="task-progress">
-                        <h4>0%</h4>
-                      </div>
-                      <div class="task-assignees">
-                        <img
-                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="task-cuadro">
-                  <div class="task-list-header">
-                    <h3>Task</h3>
-                    <div class="task-list-header-right">
-                      <h3>End Date</h3>
-                      <h3>Status</h3>
-                      <h3>Priority</h3>
-                      <h3>Progress</h3>
-                      <h3>Assignees</h3>
-                    </div>
-                  </div>
-                  <div class="task">
-                    <h4>task 1</h4>
-                    <div class="task-inner">
-                      <!-- end date -->
-                      <h4>end date</h4>
-                      <div class="task-status">
-                        <h4>not started</h4>
-                      </div>
-                      <div class="task-priority">
-                        <h4>low</h4>
-                      </div>
-                      <div class="task-progress">
-                        <h4>0%</h4>
-                      </div>
-                      <div class="task-assignees">
-                        <img
-                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
-                          alt=""
-                        />
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="project-persons">
-              <div class="project-admins">
+              <div class="project-admins" id="project_admins">
                 <h2>PROJECT ADMINS</h2>
                 <div class="admin">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
-                    alt=""
-                    style="
-                      width: 50px;
-                      height: 50px;
-                      border-radius: 30px;
-                      object-fit: cover;
-                      background-color: aqua;
-                    "
-                  />
-                  <h4>Admin Name</h4>
-                </div>
-                <div class="admin">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
-                    alt=""
-                    style="
-                      width: 50px;
-                      height: 50px;
-                      border-radius: 30px;
-                      object-fit: cover;
-                      background-color: aqua;
-                    "
-                  />
-                  <h4>Admin Name</h4>
+                
                 </div>
               </div>
-              <div class="project-members">
-                <h2>PROJECT MEMBERS</h2>
+              <div class="project-members" id="project_members">
+
+                <h2>PROJECT MEMBERS</h2>                  
                 <div class="member">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
-                    alt=""
-                    style="
-                      width: 50px;
-                      height: 50px;
-                      border-radius: 30px;
-                      object-fit: cover;
-                      background-color: aqua;
-                    "
-                  />
-                  <h4>Member Name</h4>
+                  
                 </div>
-                <div class="member">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
-                    alt=""
-                    style="
-                      width: 50px;
-                      height: 50px;
-                      border-radius: 30px;
-                      object-fit: cover;
-                      background-color: aqua;
-                    "
-                  />
-                  <h4>Member Name</h4>
-                </div>
-                <div class="member">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAYhDOcpm8jQiqPZ02OdriynaUMWwfU8Bo2Q&s"
-                    alt=""
-                    style="
-                      width: 50px;
-                      height: 50px;
-                      border-radius: 30px;
-                      object-fit: cover;
-                      background-color: aqua;
-                    "
-                  />
-                  <h4>Member Name</h4>
-                </div>
+                   
               </div>
             </div>
           </div>
         </div>
         <div class="create-project-container" id="create-project-container">
-            <div class="main-title">
-              <div></div>
-              <h2>Create Project</h2>
-              <span
-                class="material-symbols-outlined"
-                onclick="desactiveprojectform()"
-                style="color: red"
-                >cancel</span>
-            </div>
-            <form action="/createproject" method="post" class="create-project-form" enctype="multipart/form-data">
-              <div>
-                <div class="form-group">
-                  <label for="projectname">Project Name:</label>
-                  <input
-                    type="text"
-                    id="projectname"
-                    name="projectname"
-                    placeholder="Enter project name.."
-                    required
-                    autocomplete="off"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="projectdescription">Project Description:</label>
-                  <textarea
-                    id="projectdescription"
-                    name="projectdescription"
-                    placeholder="Enter project description.."
-                    required
-                  ></textarea>
-                </div>
-                <!-- Dates -->
-                <div class="form-group evenly">
+          <div class="main-title">
+            <div></div>
+            <h2>Create Project</h2>
+            <span
+              class="material-symbols-outlined"
+              onclick="desactiveprojectform()"
+              style="color: red"
+              >cancel</span
+            >
+          </div>
+          <form
+            action="/createproject"
+            method="post"
+            class="create-project-form"
+            enctype="multipart/form-data"
+          >
+            <div>
+              <div class="form-group column-form">
+                <label for="projectname">Project Name:</label>
+                <input
+                  type="text"
+                  id="projectname"
+                  name="projectname"
+                  placeholder="Enter project name.."
+                  required
+                  autocomplete="off"
+                />
+                <label for="projectdescription">Project Description:</label>
+                <textarea
+                  maxlength="200"
+                  id="projectdescription"
+                  name="projectdescription"
+                  placeholder="Enter project description.."
+                  rows="4"
+                  cols="50"
+                  required
+                ></textarea>
+                <div class="evenly">
                   <div class="center-form">
                     <label for="enddate">End Date:</label>
                     <input type="date" id="enddate" name="enddate" required />
                   </div>
                   <div class="center-form">
                     <label for="startdate">Start Date:</label>
-                    <input type="date" id="startdate" name="startdate" required />
+                    <input
+                      type="date"
+                      id="startdate"
+                      name="startdate"
+                      required
+                    />
                   </div>
                 </div>
-                <div class="form-group center-form">
-                  <button type="submit">Create Project</button>
-                </div>
-                
               </div>
+              <!-- Dates -->
               <div class="create-project-image">
                 <div class="form-group center-form">
-                  <img src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg" alt="" style="width: 300px; height: 300px; border-radius: 150px; " id="projectimage">
+                  <img
+                    src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg"
+                    alt=""
+                    style="width: 150px; height: 150px; border-radius: 75px"
+                    id="projectimage"
+                  />
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                   <label for="projectimage">Project Logo:</label>
-                  <input type="file" id="projectimagefile" name="projectimage" accept="image/*" required />
-                 </div>
-                 
+                  <input
+                    type="file"
+                    id="projectimagefile"
+                    name="projectimage"
+                    accept="image/*"
+                    required
+                  />
+                </div>
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div class="member-input2" id="member_input2">
+              <div class="form-group center-form">
+                <button onclick="addmemberproject()" type="button">
+                  Add Member
+                </button>
+              </div>
+              <div class="form-group column-form" id="members_formgroup2">
+                <div class="dynamic-grid2">
+                  <div class="column-form">
+                    <label for="member">Assign Member 1:</label>
+                    <div class="evenly">
+                      <input
+                        type="text"
+                        name="usuarios[]"
+                        placeholder="Buscar usuario..."
+                        list="usuarios-list2"
+                      />
+                      <datalist id="usuarios-list2">
+                        <% users.forEach(user => { %>
+                        <option value="<%= user._id %>">
+                          <%= user.name %>
+                        </option>
+                        <!-- Usa el _id -->
+                        <% }) %>
+                      </datalist>
+                      <span class="material-symbols-outlined delete-icon2"
+                        >delete</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group center-form">
+                <button type="submit">Create Project</button>
+              </div>
+            </div>
+          </form>
         </div>
+        <script>
+          const projectUsers = <%- JSON.stringify(projects.map(project => ({
+            _id: project._id,
+            assignedUsers: project.assignedUsers.map(user => ({
+              _id: user.userId._id,
+              name: user.userId.name
+            }))
+          }))) %>;
+        </script>
       </main>
       <!-- Main End -->
     </div>
