@@ -26,3 +26,13 @@ function toggleFilter(element){
     element.classList.add('active');
 }
 
+function toggleDropdown(menuId) {
+    document.querySelectorAll(".dropdown-menu").forEach((menu) => {
+      if (menu.id !== menuId) {
+        menu.classList.remove("active");
+      }
+    });
+
+    const dropdownMenu = document.getElementById(menuId);
+    dropdownMenu.classList.toggle("active");
+  }

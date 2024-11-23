@@ -32,17 +32,49 @@
   <body>
     <div class="grid-container">
       <!-- Header -->
-      <header class="header">
+<header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-symbols-outlined">menu</span>
         </div>
         <div class="header-left">
-          <span class="material-symbols-outlined">search</span>
+          <!-- search bar -->
+          <div class="search-bar center-form">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" placeholder="Search.." />
+          </div>
         </div>
         <div class="header-right">
-          <span class="material-symbols-outlined">notifications</span>
-          <span class="material-symbols-outlined">email</span>
-          <span class="material-symbols-outlined">account_circle</span>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('notifications-dropdown')"
+              >notifications</span
+            >
+            <div class="dropdown-menu" id="notifications-dropdown">
+              <p>No new notifications</p>
+            </div>
+          </div>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('email-dropdown')"
+              >email</span
+            >
+            <div class="dropdown-menu" id="email-dropdown">
+              <p>No new emails</p>
+            </div>
+          </div>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('account-dropdown')"
+              >account_circle</span
+            >
+            <div class="dropdown-menu" id="account-dropdown">
+              <p><a href="/profile">View Profile</a></p>
+              <p><a href="/logout">Logout</a></p>
+            </div>
+          </div>
         </div>
       </header>
       <!-- Header End -->
@@ -189,7 +221,10 @@
                       Add Member
                     </button>
                   </div>
-                  <div class="form-group center-form form-group-background" id="members_formgroup">
+                  <div
+                    class="form-group center-form form-group-background"
+                    id="members_formgroup"
+                  >
                     <div class="dynamic-grid"></div>
                   </div>
                 </div>
@@ -324,7 +359,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="member-input2" id="member_input2">
               <div class="form-group center-form form-group-background">
                 <div class="center-form">
@@ -337,7 +372,6 @@
                 class="form-group column-form form-group-background"
                 id="members_formgroup2"
               >
-                
                 <div class="dynamic-grid2">
                   <div class="column-form">
                     <label for="member">Assign Member 1:</label>

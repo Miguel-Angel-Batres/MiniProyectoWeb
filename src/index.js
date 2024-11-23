@@ -37,12 +37,22 @@ app.get('/login', (req, res) => {
     
     res.render('login');
 })
-app.get('/home', (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }else{
-        return res.render('home');
-    }
+app.get('/home', async (req, res) => {
+    try {
+        if (!req.session.userId) {
+            return res.redirect('/login');
+        }else{
+            const numprojects =  await Project.countDocuments({ creatorUserId: req.session.userId });
+            const numtasks = await Task.countDocuments({ assignedUsers: req.session.userId });
+            //usuarios registrados en todos mis proyectos   
+            const projects = await Project.find({}, "assignedUsers"); 
+            const totalUsers = projects.reduce((sum, project) => sum + project.assignedUsers.length, 0);
+            return res.render('home', {numprojects, numtasks, totalUsers});
+        }
+        
+    } catch (error) {
+        console.error(error);
+    } 
 })
 
 
@@ -125,12 +135,12 @@ app.post('/createproject', upload.single('projectimage'), async (req, res) => {
 
         const assignedUsersWithRoles = [
            
-            ...userArray.map(userId => ({
+            ...userArray.map(userId => ({ //asignar primero los miembros
                 userId,
-                role: 'miembro'  // El resto de los usuarios son "miembro"
+                role: 'miembro' 
             })),
             {
-                userId: req.session.userId, // El creador del proyecto
+                userId: req.session.userId, // asignar despues el creador como admin
                 role: 'admin'
             }
         ];
@@ -219,6 +229,25 @@ app.get('/tasks/user/:selectedoption', async (req, res) => {
         res.status(500).send('Error al obtener tareas');
     }
 });
+app.get('/alltasks', async (req, res) => {
+    try {
+        const tasks = await Task.find({}, 'name description enddate status priority projectId assignedUsers').populate('assignedUsers', 'name img');
+        const filteredtasks = tasks.filter(task => task.assignedUsers.some(user => user._id.toString() === req.session.userId));
+        res.json(filteredtasks);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener tareas');
+    }
+});
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Error al cerrar sesión');
+      }
+      res.redirect('/login');  
+    });
+  });
+3
 app.get('/members/:projectId', async (req, res) => {
     try {
         const { projectId } = req.params;

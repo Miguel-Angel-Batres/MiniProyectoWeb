@@ -103,9 +103,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <div class="task-priority">
                                 <h4>${task.priority || 'low'}</h4>
-                                </div>          
-                                <div class="task-assignees center-form">
+                                </div>     
+                                <div class="center-form">     
+                                <div class="member_circles">
                                 <!-- Aquí irán las imágenes de los asignados -->
+                                </div>
                                 </div>
                                 <div class="task-edit">
                                 <a href="/task/delete/${task._id}" class="material-symbols-outlined" style="color:red;">delete</a>
@@ -124,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         taskDiv.querySelector('.task').classList.add('red');
                     }
                     // se agregan imágenes de los assignedUsers
-                    const assigneeDiv = taskDiv.querySelector('.task-assignees');
+                    const assigneeDiv = taskDiv.querySelector('.member_circles');
                     if (task.assignedUsers && task.assignedUsers.length > 0) {
                         task.assignedUsers.forEach(user => {
                             const assigneeImg = document.createElement('img');
@@ -133,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             assigneeImg.style.width = '50px';
                             assigneeImg.style.height = '50px';
                             assigneeImg.title = user.name; 
-                            assigneeImg.classList.add('assignee-image');
                             assigneeDiv.appendChild(assigneeImg);
                         });
                     } else {
@@ -318,9 +319,11 @@ projectselect.addEventListener('change', function() {
                                 </div>
                                 <div class="task-priority">
                                 <h4>${task.priority || 'low'}</h4>
-                                </div>          
-                                <div class="task-assignees center-form">
+                                </div>  
+                                <div class="center-form">        
+                                <div class="member_circles">
                                 <!-- Aquí irán las imágenes de los asignados -->
+                                </div>
                                 </div>
                                 <div class="task-edit">
                                 <a href="/task/delete/${task._id}" class="material-symbols-outlined" style="color:red;">delete</a>
@@ -339,7 +342,7 @@ projectselect.addEventListener('change', function() {
                         taskDiv.querySelector('.task').classList.add('red');
                     }
                     // se agregan imágenes de los assignedUsers
-                    const assigneeDiv = taskDiv.querySelector('.task-assignees');
+                    const assigneeDiv = taskDiv.querySelector('.member_circles');
                     if (task.assignedUsers && task.assignedUsers.length > 0) {
                         task.assignedUsers.forEach(user => {
                             const assigneeImg = document.createElement('img');
@@ -348,7 +351,6 @@ projectselect.addEventListener('change', function() {
                             assigneeImg.style.width = '50px';
                             assigneeImg.style.height = '50px';
                             assigneeImg.title = user.name; 
-                            assigneeImg.classList.add('assignee-image');
                             assigneeDiv.appendChild(assigneeImg);
                         });
                     } else {

@@ -31,17 +31,49 @@
   <body>
     <div class="grid-container">
       <!-- Header -->
-      <header class="header">
+<header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-symbols-outlined">menu</span>
         </div>
         <div class="header-left">
-          <span class="material-symbols-outlined">search</span>
+          <!-- search bar -->
+          <div class="search-bar center-form">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" placeholder="Search.." />
+          </div>
         </div>
         <div class="header-right">
-          <span class="material-symbols-outlined">notifications</span>
-          <span class="material-symbols-outlined">email</span>
-          <span class="material-symbols-outlined">account_circle</span>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('notifications-dropdown')"
+              >notifications</span
+            >
+            <div class="dropdown-menu" id="notifications-dropdown">
+              <p>No new notifications</p>
+            </div>
+          </div>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('email-dropdown')"
+              >email</span
+            >
+            <div class="dropdown-menu" id="email-dropdown">
+              <p>No new emails</p>
+            </div>
+          </div>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('account-dropdown')"
+              >account_circle</span
+            >
+            <div class="dropdown-menu" id="account-dropdown">
+              <p><a href="/profile">View Profile</a></p>
+              <p><a href="/logout">Logout</a></p>
+            </div>
+          </div>
         </div>
       </header>
       <!-- Header End -->
@@ -88,177 +120,172 @@
       </aside>
       <!-- Sidebar End -->
       <!-- Main -->
-      <main class="main-container overflow">
-        <div class="mainsettings">
-          <div class="project-settings">
-            <div class="main-title">
-              <div></div>
+      <main class="main-container">
+        <div class="project-settings">
+          <div class="main-title" style="padding-right: 20px">
+            <div style="width: 120px"></div>
+            <div class="projectfilter">
+              <h2>PROJECT</h2>
+
+              <select id="project-select">
+                <% projects.forEach(project => { %>
+                <option value="<%= project._id %>"><%= project.name %></option>
+                <% });%>
+              </select>
+            </div>
+            <button onclick="activeprofilesettings()">Profile Settings</button>
+          </div>
+          <div class="settings-container">
+            <div class="settings">
+              <div class="setting">
+                <h2>Project Name</h2>
+                <div>
+                  <input type="text" id="project_name" />
+                  <span class="material-symbols-outlined edit-icon">edit</span>
+                </div>
+              </div>
+              <hr />
+              <div class="setting">
+                <h2>Project Description</h2>
+                <div>
+                  <input type="text" id="project_description" />
+                  <span class="material-symbols-outlined edit-icon">edit</span>
+                </div>
+              </div>
+              <hr />
               <div class="center-form">
-                <h2>Project Settings</h2>
-                <div class="column-group center-form">
-                  <select id="project" name="project">
-                    <option value="project1">Project 1</option>
-                    <option value="project2">Project 2</option>
-                    <option value="project3">Project 3</option>
-                    <option value="project4">Project 4</option>
-                  </select>
+                <div class="image-container" style="padding: 20px">
+                  <img
+                    src=""
+                    alt=""
+                    style="width: 150px; height: 150px; border-radius: 75px"
+                    id="projectsettingimage"
+                  />
+                  <label
+                    for="projectsettingsimagefile"
+                    class="edit-icon"
+                    style="background-color: green"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                  </label>
+                  <input
+                    type="file"
+                    id="projectsettingsimagefile"
+                    name="projectimage"
+                    accept="image/*"
+                    required
+                    hidden
+                  />
                 </div>
               </div>
-              <button onclick="activeprofile()">Profile Settings</button>
             </div>
-  
-            <div class="settings-container">
-              <div style="background-color: #131922">
-                <div class="column-group">
-                  <div class="setting-between">
-                    <div class="column-group">
-                      <h2>Project Name</h2>
-                      <h4>example name</h4>
-                    </div>
-                    <button>
-                      <span class="material-symbols-outlined">edit</span>
-                      Edit
-                    </button>
+            <div class="settings">
+              <div class="setting">
+                <h2>Project Members</h2>
+                <div class="center-form">
+                  <div class="member_circles">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
                   </div>
-                  <hr />
-                  <div class="setting-between">
-                    <div class="column-group">
-                      <h2>Project Description</h2>
-                      <h4>example description</h4>
-                    </div>
-                    <button>
-                      <span class="material-symbols-outlined">edit</span>
-                      Edit
-                    </button>
-                  </div>
-                  <hr />
-                  <!-- img -->
-                  <div class="center-form form-group">
-                    <div class="image-container">
-                      <img
-                        src="https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg"
-                        alt="project image"
-                        style="
-                          width: 150px;
-                          height: 150px;
-                          border-radius: 100px;
-                          margin-right: 20px;
-                        "
-                      />
-                      <label for="projectimgfile" class="edit-icon">
-                        <span class="material-symbols-outlined">edit</span>
-                      </label>
-                      <input
-                        type="file"
-                        id="projectimgfile"
-                        name="projectimg"
-                        required
-                        hidden
-                      />
-                    </div>
-                  </div>
+                  <span class="material-symbols-outlined edit-icon">edit</span>
                 </div>
               </div>
-  
-              <div style="background-color: #131922">
-                <div class="setting-between">
-                  <div class="column-group">
-                    <h2>Project Members</h2>
-                    <h4>example members</h4>
+              <hr />
+              <div class="setting">
+                <h2>Project admins</h2>
+                <div class="center-form">
+                  <div class="member_circles">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
                   </div>
-                  <button>
-                    <span class="material-symbols-outlined">edit</span>
-                    Edit
-                  </button>
-                </div>
-                <hr />
-                <div class="setting-between">
-                  <div class="column-group">
-                    <h2>Project Admins</h2>
-                    <h4>example Admins</h4>
-                  </div>
-                  <button>
-                    <span class="material-symbols-outlined">edit</span>
-                    Edit
-                  </button>
+                  <span class="material-symbols-outlined edit-icon">edit</span>
                 </div>
               </div>
+
+              <hr />
             </div>
           </div>
-          <div class="profile-settings ">
-            <div class="center-form">
-              <button onclick="activeproject()">Project Settings</button>
-            </div>
-            <div class="profile-container">
-              <div style="background-color: #131922; padding: 40px;">
-                <div class="column-group">
-                  <div class="setting-between">
-                    <div class="column-group">
-                      <h2>Profile Name</h2>
-                      <h4>example name</h4>
-                    </div>
-                    <button>
-                      <span class="material-symbols-outlined">edit</span>
-                      Edit
-                    </button>
-                  </div>
-                  <hr />
-                  <div class="setting-between">
-                    <div class="column-group">
-                      <h2>Profile password</h2>
-                      <h4>example password</h4>
-                    </div>
-                    <button>
-                      <span class="material-symbols-outlined">edit</span>
-                      Edit
-                    </button>
-                  </div>
-                  <hr />
-                  <!-- img -->
-                  <div class="center-form form-group">
-                    <div class="image-container">
-                      <img
-                        src="https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg"
-                        alt="project image"
-                        style="
-                          width: 150px;
-                          height: 150px;
-                          border-radius: 100px;
-                          margin-right: 20px;
-                        "
-                      />
-                      <label for="profileimgfile" class="edit-icon">
-                        <span class="material-symbols-outlined">edit</span>
-                      </label>
-                      <input
-                        type="file"
-                        id="profileimgfile"
-                        name="profileimg"
-                        required
-                        hidden
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div></div>
         </div>
-        
+        <div class="profile-settings">
+          <div class="center-form" style="margin: 20px 0px">
+            <button onclick="activeprojectsettings()">Project Settings</button>
+          </div>
+          <div class="settings-container">
+            <div class="settings">
+              <div class="setting">
+                <h2>Profile Name</h2>
+                <div>
+                  <input type="text" id="profile_name" />
+                  <span class="material-symbols-outlined edit-icon">edit</span>
+                </div>
+              </div>
+              <hr />
+              <div class="setting">
+                <h2>Profile Password</h2>
+                <div>
+                  <input type="password" id="profile_password" />
+                  <span class="material-symbols-outlined edit-icon">edit</span>
+                </div>
+              </div>
+              <hr />
+              <div class="center-form" style="padding: 20px">
+                <div class="image-container">
+                  <img
+                    src=""
+                    alt=""
+                    style="width: 150px; height: 150px; border-radius: 75px"
+                    id="profilesettingimage"
+                  />
+                  <label
+                    for="profilesettingsimagefile"
+                    class="edit-icon"
+                    style="background-color: green"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                  </label>
+                  <input
+                    type="file"
+                    id="profilesettingsimagefile"
+                    name="profileimage"
+                    accept="image/*"
+                    required
+                    hidden
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div></div>
+        </div>
       </main>
       <!-- Main End -->
-       <script>
-        function activeprofile() {
-          document.querySelector(".project-settings").classList.add("active");
+      <script>
+        function activeprofilesettings() {
+          document.querySelector(".project-settings").classList.add("inactive");
           document.querySelector(".profile-settings").classList.add("active");
         }
-        function activeproject() {
-          document.querySelector(".project-settings").classList.remove("active");
-          document.querySelector(".profile-settings").classList.remove("active");
+        function activeprojectsettings() {
+          document
+            .querySelector(".project-settings")
+            .classList.remove("inactive");
+          document
+            .querySelector(".profile-settings")
+            .classList.remove("active");
         }
-
-      
-       </script>
+      </script>
     </div>
   </body>
 </html>

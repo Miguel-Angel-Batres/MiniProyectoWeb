@@ -65,6 +65,12 @@ hr {
     background-color: #575757;
     transition: all 0.3s;
 }
+.edit-icon{
+    padding: 5px;
+    border-radius: 50%;
+    background-color: green;
+    transition: all 0.3s;
+}
 .edit-icon:hover{
     transform: scale(1.4);
     cursor: pointer;
@@ -160,7 +166,50 @@ hr {
 .sidebar-list-item:hover {
     cursor: pointer;
 }
-
+.header-right .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+.search-bar input{
+    width: 350px;
+    padding: 0.5rem 10px.5rem 10px;
+    font-size: 1rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: #131922;
+    color: white;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 130%;
+    right: 0;
+    background-color: #131922;
+    min-width: 150px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+  
+  .dropdown-menu p {
+    margin: 0;
+    padding: 20px;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu p:hover {
+    background-color: #3D4450;
+  }
+  .dropdown-menu a {
+    color: inherit;
+    text-decoration: none;
+  }
+  /* Mostrar el menú cuando está activo */
+  .dropdown-menu.active {
+    display: block;
+  }
+  
 /*------------ SIDEBAR ------------ */
 
 #sidebar {
@@ -542,88 +591,70 @@ button:hover{
     gap: 10px;
 }
 /* ----------- SETTINGS ------------- */
-.setting-between{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-.settings-container{
-    display: grid;
-    grid-template-columns: 50% 50%;
-    gap: 40px;
-    padding: 20px;
-    max-height: 100%;
-    align-items: center;
-    justify-content: center;
-}
-.mainsettings{
+.project-settings{
     position: relative;
+    overflow-y: auto;
     height: 100%;
-    width: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 1s ease-in-out;
 }
 .profile-settings{
     position: relative;
-    top: 50%; /* Inicialmente fuera del contenedor */
-    left: 0;
-    width: 100%;
-    transition: all 1s;
+    top:0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 1s ease-in-out;
 }
-.project-settings .main-title{
-    padding: auto 20px;
-}
-.profile-settings.active {
-    top:-100%;
-}
-.project-settings.active{
-    top:-150%;
+.project-settings.inactive{
+    top: -100%;
     visibility: hidden;
 }
-.project-settings{
-    position:relative;
-    top: 0; /* Inicialmente fuera del contenedor */
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: all 1s;
+.profile-settings.active{
+    top: -100%;
 }
 
-.profile-container{
+.settings-container{
     display: flex;
-    justify-content: center;    
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin-top: 50px;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
 }
-.profile-container > *{
-    
-    padding: 20px 50px;
+.settings{
+    display: flex;
+    flex-direction: column;  
+    gap: 20px;
+    width: 500px;
+    height: auto;
+    background-color: #131922;
+    padding: 20px;
     border-radius: 15px;
-    width: 100%;
-    height: 100%;
-    margin: auto 0;
 }
-.settings-container > *{
-    max-width: 100%;
-}
-.settings-container h2{
+.setting {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     text-align: left;
+    gap: 10px;
+    align-items: center;
+    padding: 20px;
 }
-
-.settings-container > *{
-    padding: 50px;
-    border-radius: 15px;
-    height: 80%;
+.member_circles{
+    display: flex;
 }
-.overflow{
-    overflow-y: auto;
+.member_circles img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: -20px;
 }
-
-
-
-
-
 /*------------ RESPONSIVO ------------ */
 /* medium <= 992px */
 @media screen and (max-width:992px) {

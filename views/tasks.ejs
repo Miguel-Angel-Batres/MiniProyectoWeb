@@ -31,17 +31,49 @@
   <body>
     <div class="grid-container">
       <!-- Header -->
-      <header class="header">
+<header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-symbols-outlined">menu</span>
         </div>
         <div class="header-left">
-          <span class="material-symbols-outlined">search</span>
+          <!-- search bar -->
+          <div class="search-bar center-form">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" placeholder="Search.." />
+          </div>
         </div>
         <div class="header-right">
-          <span class="material-symbols-outlined">notifications</span>
-          <span class="material-symbols-outlined">email</span>
-          <span class="material-symbols-outlined">account_circle</span>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('notifications-dropdown')"
+              >notifications</span
+            >
+            <div class="dropdown-menu" id="notifications-dropdown">
+              <p>No new notifications</p>
+            </div>
+          </div>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('email-dropdown')"
+              >email</span
+            >
+            <div class="dropdown-menu" id="email-dropdown">
+              <p>No new emails</p>
+            </div>
+          </div>
+          <div class="dropdown">
+            <span
+              class="material-symbols-outlined"
+              onclick="toggleDropdown('account-dropdown')"
+              >account_circle</span
+            >
+            <div class="dropdown-menu" id="account-dropdown">
+              <p><a href="/profile">View Profile</a></p>
+              <p><a href="/logout">Logout</a></p>
+            </div>
+          </div>
         </div>
       </header>
       <!-- Header End -->
@@ -145,6 +177,7 @@
                     <h3>Status</h3>
                     <h3>Priority</h3>
                     <h3>Assignees</h3>
+                    <h3>Edit</h3>
                   </div>
                 </div>`;
 
@@ -163,6 +196,7 @@
                             <h3>Status</h3>
                             <h3>Priority</h3>
                             <h3>Assignees</h3>
+                            <h3>Edit</h3>
                             </div>
                         </div>
                         <div class="task">
@@ -174,11 +208,17 @@
                                 </div>
                                 <div class="task-priority">
                                 <h4>${task.priority || "low"}</h4>
-                                </div>          
-                                <div class="task-assignees center-form">
+                                </div>     
+                                <div class="center-form">     
+                                <div class="member_circles">
                                 <!-- Aquí irán las imágenes de los asignados -->
                                 </div>
-                                
+                                </div>
+                                <div class="task2-edit">
+                                <span class="material-symbols-outlined">
+                                keyboard_arrow_down
+                                </span>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -192,7 +232,7 @@
                         taskDiv.querySelector('.task').classList.add('red');
                     }
                 // se agregan imágenes de los assignedUsers
-                const assigneeDiv = taskDiv.querySelector(".task-assignees");
+                const assigneeDiv = taskDiv.querySelector(".member_circles");
                 if (task.assignedUsers && task.assignedUsers.length > 0) {
                   task.assignedUsers.forEach((user) => {
                     const assigneeImg = document.createElement("img");
@@ -201,7 +241,6 @@
                     assigneeImg.style.width = "50px";
                     assigneeImg.style.height = "50px";
                     assigneeImg.title = user.name;
-                    assigneeImg.classList.add("assignee-image");
                     assigneeDiv.appendChild(assigneeImg);
                   });
                 } else {
