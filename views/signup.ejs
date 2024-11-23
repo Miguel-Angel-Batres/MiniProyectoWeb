@@ -1,58 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign up</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-  
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!-- Material symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="page-container">
-        <div class="form-container">
-            <h2>Registrarse</h2>
-            <form action="/signup" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="name">Nombre:</label>
-                    <input type="text" id="name" name="username" placeholder="Ingresa tu nombre.." required autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña.." required>
-                </div>
-                <div class="form-group center-form">
-                    <img
-                    src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg"
-                    alt=""
-                    style="width: 300px; height: 300px; border-radius: 150px"
-                    id="userimg"
-                    />
-                </div>
-                <div class="form-group center-form">
-                    <label for="image">Imagen:</label>
-                    <input type="file" id="userimgfile" name="userimg" required>
-                </div>
-                <div class="form-group center-form">
-                    <button type="submit">Registrarse</button>
-                </div>
-            </form>
-            <p>Ya tienes cuenta? <a href="/login">Ingresa</a></p>
-    
+      <div class="form-container">
+        <div class="form-group-background">
+          <h2>Sign Up</h2>
+          <form action="/signup" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input
+                type="text"
+                id="name"
+                name="username"
+                placeholder="Enter your name.."
+                required
+                autocomplete="off"
+              />
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <div class="center-form column-form">
+              <div class="image-container">
+                <img
+                  src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg"
+                  alt=""
+                  style="width: 150px; height: 150px; border-radius: 100px"
+                  id="userimg"
+                />
+                <label for="userimgfile" class="edit-icon"
+                  ><span class="material-symbols-outlined">edit</span></label
+                >
+                <input
+                  type="file"
+                  id="userimgfile"
+                  name="userimg"
+                  required
+                  hidden
+                />
+              </div>
+              <div class="center-form">
+                <p>Already have an account? <a href="/login">Log In</a></p>
+              </div>
+            </div>
+          </form>
+          <div class="center-form">
+            <button type="submit">Sign Up</button>
+          </div>
         </div>
+      </div>
     </div>
     <script>
-        document.getElementById('userimgfile').addEventListener('change', function(){
-        const file = this.files[0];
-        if(file)
-        {
-         const reader = new FileReader();
-         reader.onload = function(){
-              const img = document.getElementById('userimg');
+      document
+        .getElementById("userimgfile")
+        .addEventListener("change", function () {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+              const img = document.getElementById("userimg");
               img.src = reader.result;
-         }
-         reader.readAsDataURL(file);
-    }
-});
+            };
+            reader.readAsDataURL(file);
+          }
+        });
     </script>
-</body>
+  </body>
 </html>

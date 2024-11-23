@@ -26,6 +26,7 @@
       rel="stylesheet"
     />
     <script src="src/projectfunctions.js" defer></script>
+    <script src="src/sidebar.js" defer></script>
   </head>
 
   <body>
@@ -79,7 +80,7 @@
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="#">
+            <a href="/settings">
               <span class="material-symbols-outlined">settings</span> Settings
             </a>
           </li>
@@ -107,7 +108,7 @@
                   data-image="<%= project.image %>"
                   data-description="<%= project.description %>"
                   data-name="<%= project.name %>"
-                  >
+                >
                   <%= project.name %>
                 </option>
                 <% }); %>
@@ -116,11 +117,7 @@
             <div class="imageproject-container">
               <h2 id="projectname">Project Name</h2>
               <div class="imageproject">
-                <img
-                  src=""
-                  alt="project image"
-                  id="mainprojectimage"
-                />
+                <img src="" alt="project image" id="mainprojectimage" />
               </div>
             </div>
             <div class="projectdescription">
@@ -152,7 +149,7 @@
               <form action="/createtask" method="post" class="addtask-form">
                 <input type="hidden" name="projectId" id="projectTask" />
                 <div class="task-input">
-                  <div class="form-group">
+                  <div class="form-group form-group-background">
                     <label for="taskname">Task Name:</label>
                     <input
                       type="text"
@@ -162,13 +159,9 @@
                       required
                       autocomplete="off"
                     />
-                  </div>
-                  <div class="form-group">
                     <label for="enddate">End Date:</label>
                     <input type="date" id="enddate" name="taskdate" required />
-                  </div>
 
-                  <div class="form-group">
                     <label for="taskdescription">Task Description:</label>
                     <textarea
                       id="taskdescription"
@@ -177,7 +170,7 @@
                       required
                     ></textarea>
                   </div>
-                  <div class="form-group evenly">
+                  <div class="form-group evenly form-group-background">
                     <!-- priority -->
                     <div class="center-form">
                       <label for="priority">Priority:</label>
@@ -191,15 +184,13 @@
                   </div>
                 </div>
                 <div class="member-input" id="member_input">
-                  <div class="form-group center-form">
+                  <div class="form-group center-form form-group-background">
                     <button onclick="addmember()" type="button">
                       Add Member
                     </button>
                   </div>
-                  <div class="form-group center-form" id="members_formgroup">
-                    <div class="dynamic-grid">
-                     
-                    </div>
+                  <div class="form-group center-form form-group-background" id="members_formgroup">
+                    <div class="dynamic-grid"></div>
                   </div>
                 </div>
               </form>
@@ -245,17 +236,11 @@
             <div class="project-persons">
               <div class="project-admins" id="project_admins">
                 <h2>PROJECT ADMINS</h2>
-                <div class="admin">
-                
-                </div>
+                <div class="admin"></div>
               </div>
               <div class="project-members" id="project_members">
-
-                <h2>PROJECT MEMBERS</h2>                  
-                <div class="member">
-                  
-                </div>
-                   
+                <h2>PROJECT MEMBERS</h2>
+                <div class="member"></div>
               </div>
             </div>
           </div>
@@ -278,7 +263,7 @@
             enctype="multipart/form-data"
           >
             <div>
-              <div class="form-group column-form">
+              <div class="form-group column-form form-group-background">
                 <label for="projectname">Project Name:</label>
                 <input
                   type="text"
@@ -316,34 +301,43 @@
               </div>
               <!-- Dates -->
               <div class="create-project-image">
-                <div class="form-group center-form">
-                  <img
-                    src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg"
-                    alt=""
-                    style="width: 150px; height: 150px; border-radius: 75px"
-                    id="projectimage"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="projectimage">Project Logo:</label>
-                  <input
-                    type="file"
-                    id="projectimagefile"
-                    name="projectimage"
-                    accept="image/*"
-                    required
-                  />
+                <div class="form-group center-form form-group-background">
+                  <div class="image-container">
+                    <img
+                      src="https://www.shutterstock.com/image-vector/image-icon-600nw-211642900.jpg"
+                      alt=""
+                      style="width: 150px; height: 150px; border-radius: 75px"
+                      id="projectimage"
+                    />
+                    <label for="projectimagefile" class="edit-icon">
+                      <span class="material-symbols-outlined">edit</span>
+                    </label>
+                    <input
+                      type="file"
+                      id="projectimagefile"
+                      name="projectimage"
+                      accept="image/*"
+                      required
+                      hidden
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-
+            
             <div class="member-input2" id="member_input2">
-              <div class="form-group center-form">
-                <button onclick="addmemberproject()" type="button">
-                  Add Member
-                </button>
+              <div class="form-group center-form form-group-background">
+                <div class="center-form">
+                  <button onclick="addmemberproject()" type="button">
+                    Add Member
+                  </button>
+                </div>
               </div>
-              <div class="form-group column-form" id="members_formgroup2">
+              <div
+                class="form-group column-form form-group-background"
+                id="members_formgroup2"
+              >
+                
                 <div class="dynamic-grid2">
                   <div class="column-form">
                     <label for="member">Assign Member 1:</label>
@@ -369,7 +363,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group center-form">
+              <div class="form-group center-form form-group-background">
                 <button type="submit">Create Project</button>
               </div>
             </div>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TASKE</title>
+    <!-- CSS -->
+    <link
+      rel="preload"
+      href="css/style.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link rel="icon" href="data:;base64,=" />
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Material symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <script src="src/sidebar.js" defer></script>
+  </head>
+
+  <body>
+    <div class="grid-container">
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-symbols-outlined">menu</span>
+        </div>
+        <div class="header-left">
+          <span class="material-symbols-outlined">search</span>
+        </div>
+        <div class="header-right">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="material-symbols-outlined">email</span>
+          <span class="material-symbols-outlined">account_circle</span>
+        </div>
+      </header>
+      <!-- Header End -->
+      <!-- Sidebar  -->
+      <aside id="sidebar">
+        <div class="sidebar-title">
+          <div class="sidebar-brand">
+            <!-- task manager symbol -->
+            <span class="material-symbols-outlined"> editor_choice </span>TASKE
+          </div>
+          <span class="material-symbols-outlined" onclick="closeSidebar()"
+            >close</span
+          >
+        </div>
+        <ul class="sidebar-list">
+          <li class="sidebar-list-item">
+            <a href="/home">
+              <span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="/tasks">
+              <span class="material-symbols-outlined">inventory</span> Tasks
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="/projects">
+              <span class="material-symbols-outlined">inventory_2</span>
+              Projects
+            </a>
+          </li>
+
+          <li class="sidebar-list-item">
+            <a href="#">
+              <span class="material-symbols-outlined">report</span> Reports
+            </a>
+          </li>
+          <li class="sidebar-list-item">
+            <a href="/settings">
+              <span class="material-symbols-outlined">settings</span> Settings
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- Sidebar End -->
+      <!-- Main -->
+      <main class="main-container overflow">
+        <div class="mainsettings">
+          <div class="project-settings">
+            <div class="main-title">
+              <div></div>
+              <div class="center-form">
+                <h2>Project Settings</h2>
+                <div class="column-group center-form">
+                  <select id="project" name="project">
+                    <option value="project1">Project 1</option>
+                    <option value="project2">Project 2</option>
+                    <option value="project3">Project 3</option>
+                    <option value="project4">Project 4</option>
+                  </select>
+                </div>
+              </div>
+              <button onclick="activeprofile()">Profile Settings</button>
+            </div>
+  
+            <div class="settings-container">
+              <div style="background-color: #131922">
+                <div class="column-group">
+                  <div class="setting-between">
+                    <div class="column-group">
+                      <h2>Project Name</h2>
+                      <h4>example name</h4>
+                    </div>
+                    <button>
+                      <span class="material-symbols-outlined">edit</span>
+                      Edit
+                    </button>
+                  </div>
+                  <hr />
+                  <div class="setting-between">
+                    <div class="column-group">
+                      <h2>Project Description</h2>
+                      <h4>example description</h4>
+                    </div>
+                    <button>
+                      <span class="material-symbols-outlined">edit</span>
+                      Edit
+                    </button>
+                  </div>
+                  <hr />
+                  <!-- img -->
+                  <div class="center-form form-group">
+                    <div class="image-container">
+                      <img
+                        src="https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg"
+                        alt="project image"
+                        style="
+                          width: 150px;
+                          height: 150px;
+                          border-radius: 100px;
+                          margin-right: 20px;
+                        "
+                      />
+                      <label for="projectimgfile" class="edit-icon">
+                        <span class="material-symbols-outlined">edit</span>
+                      </label>
+                      <input
+                        type="file"
+                        id="projectimgfile"
+                        name="projectimg"
+                        required
+                        hidden
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div style="background-color: #131922">
+                <div class="setting-between">
+                  <div class="column-group">
+                    <h2>Project Members</h2>
+                    <h4>example members</h4>
+                  </div>
+                  <button>
+                    <span class="material-symbols-outlined">edit</span>
+                    Edit
+                  </button>
+                </div>
+                <hr />
+                <div class="setting-between">
+                  <div class="column-group">
+                    <h2>Project Admins</h2>
+                    <h4>example Admins</h4>
+                  </div>
+                  <button>
+                    <span class="material-symbols-outlined">edit</span>
+                    Edit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="profile-settings ">
+            <div class="center-form">
+              <button onclick="activeproject()">Project Settings</button>
+            </div>
+            <div class="profile-container">
+              <div style="background-color: #131922; padding: 40px;">
+                <div class="column-group">
+                  <div class="setting-between">
+                    <div class="column-group">
+                      <h2>Profile Name</h2>
+                      <h4>example name</h4>
+                    </div>
+                    <button>
+                      <span class="material-symbols-outlined">edit</span>
+                      Edit
+                    </button>
+                  </div>
+                  <hr />
+                  <div class="setting-between">
+                    <div class="column-group">
+                      <h2>Profile password</h2>
+                      <h4>example password</h4>
+                    </div>
+                    <button>
+                      <span class="material-symbols-outlined">edit</span>
+                      Edit
+                    </button>
+                  </div>
+                  <hr />
+                  <!-- img -->
+                  <div class="center-form form-group">
+                    <div class="image-container">
+                      <img
+                        src="https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg"
+                        alt="project image"
+                        style="
+                          width: 150px;
+                          height: 150px;
+                          border-radius: 100px;
+                          margin-right: 20px;
+                        "
+                      />
+                      <label for="profileimgfile" class="edit-icon">
+                        <span class="material-symbols-outlined">edit</span>
+                      </label>
+                      <input
+                        type="file"
+                        id="profileimgfile"
+                        name="profileimg"
+                        required
+                        hidden
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </main>
+      <!-- Main End -->
+       <script>
+        function activeprofile() {
+          document.querySelector(".project-settings").classList.add("active");
+          document.querySelector(".profile-settings").classList.add("active");
+        }
+        function activeproject() {
+          document.querySelector(".project-settings").classList.remove("active");
+          document.querySelector(".profile-settings").classList.remove("active");
+        }
+
+      
+       </script>
+    </div>
+  </body>
+</html>

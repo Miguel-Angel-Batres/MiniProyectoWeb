@@ -45,14 +45,6 @@ app.get('/home', (req, res) => {
     }
 })
 
-app.get('/tasks', (req, res) => {
-    // comprobar si hay session, si no no se puede acceder
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }else{
-        return res.render('tasks');
-    }
-})  
 
 app.post('/signup',upload.single('userimg'), async (req, res) => {
     try {
@@ -128,6 +120,8 @@ app.post('/createproject', upload.single('projectimage'), async (req, res) => {
         const assignedUsers = req.body.usuarios;
 
         const userArray = Array.isArray(assignedUsers) ? assignedUsers : [assignedUsers];
+        const startDateformatted = new Date(startdate.split('T')[0]);
+        const endDateformatted = new Date(enddate.split('T')[0]);
 
         const assignedUsersWithRoles = [
            
@@ -145,8 +139,8 @@ app.post('/createproject', upload.single('projectimage'), async (req, res) => {
         const newProject = new Project({
             name: projectname,
             description: projectdescription,
-            startDate: new Date(startdate),
-            endDate: new Date(enddate),
+            startDate: startDateformatted,
+            endDate: endDateformatted,
             createdAt: new Date(),
             creatorUserId: req.session.userId,
             assignedUsers: assignedUsersWithRoles, 
@@ -166,20 +160,20 @@ app.post('/createtask', async (req, res) => {
     try {
         const { taskname, priority, taskdescription, taskdate, projectId } = req.body;
         const assignedUsers = req.body.search_usuarios;
-        
         const userArray = Array.isArray(assignedUsers) ? assignedUsers : [assignedUsers];
-
+        const formattedDate = taskdate.toISOString().split('T')[0]
         const newTask = new Task({
             name: taskname,
             description: taskdescription,
-            enddate: new Date(taskdate),
+            enddate: formattedDate,
+            status: 'not started',
             priority: priority,
             projectId: projectId,
             assignedUsers: userArray,
         });
 
         await newTask.save();
-        res.redirect('/tasks');
+        res.redirect('/projects');
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al crear tarea');
@@ -198,7 +192,33 @@ app.get('/tasks/:projectId', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+app.get('/tasks', async (req, res) => {
+    try{
+        const projects = await Project.find({ }, 
+            'name');
+        if (!req.session.userId) {
+            return res.redirect('/login');
+        }else{
+            res.render('tasks', {projects});
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+// fetch to get tasks by project id and filter by user.session
+app.get('/tasks/user/:selectedoption', async (req, res) => {
+    try {
+        const { selectedoption } = req.params;
+        const tasks = await Task.find({}, 'name description enddate status priority projectId assignedUsers').populate('assignedUsers', 'name img');
+        tasks.filter(task => task.projectId.toString() === selectedoption);
+        const filteredtasks = tasks.filter(task => task.assignedUsers.some(user => user._id.toString() === req.session.userId));
 
+        res.json(filteredtasks);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener tareas');
+    }
+});
 app.get('/members/:projectId', async (req, res) => {
     try {
         const { projectId } = req.params;
@@ -209,3 +229,32 @@ app.get('/members/:projectId', async (req, res) => {
         res.status(500).send('Error al obtener miembros');
     }
 });
+app.get('/task/delete/:taskId', async (req, res) => {
+    try {
+        const { taskId } = req.params;
+        //delete task
+        await Task.findByIdAndDelete(taskId);
+         res.redirect('/projects');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener tarea');
+    }
+});
+app.get('/settings', async (req, res) => {
+    try {
+        
+        const user = await usermodel.findById(req.session.userId);
+        // mandar proyectos 
+        const projects = await Project.find({ creatorUserId: req.session.userId }, 
+            'name description startDate endDate createdAt creatorUserid assignedUsers image');
+
+        if (!req.session.userId) {
+            return res.redirect('/login');
+        }else{
+            return res.render('settings', {user,projects});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener usuario');
+    }
+})
