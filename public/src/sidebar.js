@@ -18,12 +18,21 @@ function closeSidebar(){
     }
 }
 
-function toggleFilter(element){
+function toggleFilter(element,color){
+    //change background color of element
+    
     const filters = document.querySelectorAll(".filterbox");
     filters.forEach(filter => {
-        filter.classList.remove('active');
+        filter.style.backgroundColor = "transparent";
+        filter.style.border = '4px solid rgb(61, 68, 80)';
+        filter.style.borderBottom = "none";
     });
-    element.classList.add('active');
+    element.style.backgroundColor = color;
+    element.style.borderColor = color;
+    const bordernav= document.getElementById("filterheader");
+    bordernav.style.borderBottomColor =  color;
+
+    
 }
 
 function toggleDropdown(menuId) {

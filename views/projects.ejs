@@ -32,7 +32,7 @@
   <body>
     <div class="grid-container">
       <!-- Header -->
-<header class="header">
+      <header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-symbols-outlined">menu</span>
         </div>
@@ -231,7 +231,7 @@
               </form>
             </div>
             <div class="main-tasks">
-              <div class="task-header">
+              <div class="task-header" id="filterheader">
                 <div class="task-title">
                   <h2>TASKS</h2>
                   <!-- add task button -->
@@ -244,14 +244,30 @@
                   >
                 </div>
                 <div class="task-filter">
-                  <div class="filterbox" onclick="toggleFilter(this)">
+                  <div
+                    class="filterbox"
+                    onclick="toggleFilter(this,'blue'); changefilter('alltasks');"
+                    id="startfilter"
+                  >
                     <h4>All Tasks</h4>
                   </div>
-                  <div class="filterbox" onclick="toggleFilter(this)">
+                  <div
+                    class="filterbox"
+                    onclick="toggleFilter(this,'green'); changefilter('completed')"
+                  >
                     <h4>Completed Tasks</h4>
                   </div>
-                  <div class="filterbox" onclick="toggleFilter(this)">
+                  <div
+                    class="filterbox"
+                    onclick="toggleFilter(this,'orange'); changefilter('incompleted')"
+                  >
                     <h4>Incompleted Tasks</h4>
+                  </div>
+                  <div
+                    class="filterbox"
+                    onclick="toggleFilter(this,'red'); changefilter('notstarted')"
+                  >
+                    <h4>Not Started Tasks</h4>
                   </div>
                 </div>
               </div>

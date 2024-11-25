@@ -4,7 +4,6 @@ const projectname = document.getElementById('projectname');
 const projectdescription = document.getElementById('projectdescription');
 const projectimagefile = document.getElementById('projectimagefile');
 const projectTask = document.getElementById('projectTask');
-
 document.getElementById('projectimagefile').addEventListener('change', function(event) {
     const file = event.target.files[0];  
 
@@ -22,7 +21,7 @@ document.getElementById('projectimagefile').addEventListener('change', function(
     }
 });
 document.addEventListener('DOMContentLoaded', function() {
-    
+    toggleFilter(document.getElementById("startfilter"), "blue");
     if (projectselect) {
         if (projectselect.options.length > 0) {
             addmember();
@@ -55,149 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             //cargar tareas
         const projectId = selectedOption.value;
-        fetch(`/tasks/${projectId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(tasks => {
-            const taskList = document.getElementById('taskList');
-            taskList.innerHTML = ''; 
-            taskList.innerHTML = 
-            `<div id="column_guide" class="task-list-header">
-                  <h3>Task</h3>
-                  <div class="task-list-header-right">
-                    <h3>End Date</h3>
-                    <h3>Status</h3>
-                    <h3>Priority</h3>
-                    <h3>Assignees</h3>
-                    <h3>Edit</h3>
-                  </div>
-                </div>`; 
-            console.log(tasks);
-            if (tasks.length === 0) {
-                taskList.innerHTML = '<div class="center-form"><h3>No tasks found</h3></div>';
-            } else {
-                tasks.forEach(task => {
-                    const taskDiv = document.createElement('div');
-                    taskDiv.classList.add('task-cuadro');
-                    taskDiv.innerHTML = `
-                        <div class="task-list-header">
-                            <h3>Task</h3>
-                            <div class="task-list-header-right">
-                            <h3>End Date</h3>
-                            <h3>Status</h3>
-                            <h3>Priority</h3>
-                            <h3>Assignees</h3>
-                            <h3>Edit</h3>
-                            </div>
-                        </div>
-                        <div class="task">
-                            <h4>${task.name}</h4>
-                            <div class="task-inner">
-                                <h4>${task.enddate ? new Date(task.enddate).toISOString().split('T')[0] : 'N/A'}</h4>
-                                <div class="task-status">
-                                <h4>${task.status || 'not started'}</h4>
-                                </div>
-                                <div class="task-priority">
-                                <h4>${task.priority || 'low'}</h4>
-                                </div>     
-                                <div class="center-form">     
-                                <div class="member_circles">
-                                <!-- Aquí irán las imágenes de los asignados -->
-                                </div>
-                                </div>
-                                <div class="task-edit">
-                                <a href="/task/delete/${task._id}" class="material-symbols-outlined" style="color:red;">delete</a>
-                                
-                            </div>
-                        </div>
-                    `;
-                    // agregar distintas clases a clase task, segun el estado de la tarea
-                    if (task.status === 'completed') {
-                        taskDiv.querySelector('.task').classList.add('green');
-                    }
-                    if (task.status === 'in progress') {
-                        taskDiv.querySelector('.task').classList.add('orange');
-                    }
-                    if (task.status === 'not started') {
-                        taskDiv.querySelector('.task').classList.add('red');
-                    }
-                    // se agregan imágenes de los assignedUsers
-                    const assigneeDiv = taskDiv.querySelector('.member_circles');
-                    if (task.assignedUsers && task.assignedUsers.length > 0) {
-                        task.assignedUsers.forEach(user => {
-                            const assigneeImg = document.createElement('img');
-                            assigneeImg.src = user.img; 
-                            assigneeImg.alt = user.name; 
-                            assigneeImg.style.width = '50px';
-                            assigneeImg.style.height = '50px';
-                            assigneeImg.title = user.name; 
-                            assigneeDiv.appendChild(assigneeImg);
-                        });
-                    } else {
-                        assigneeDiv.innerHTML += '<p>No assignees</p>';
-                    }
-
-                    taskList.appendChild(taskDiv);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching tasks:', error);
-        });
-        // team members and admins
-       fetch(`/members/${projectId}`)
-       .then(response => response.json())
-          .then(data => {
-            const project_admins = document.getElementById('project_admins');
-            project_admins.innerHTML = '';
-            project_admins.innerHTML = `<h2>PROJECT ADMINS</h2>`;
-            if(data.length === 0 || data === undefined){
-                project_admins.innerHTML = '<div class="center-form"><h3>No admins found</h3></div>';
-            }else{
-                data.filter(admin => admin.role === 'admin').forEach(admin => {
-                    const adminDiv = document.createElement('div');
-                    adminDiv.classList.add('admin');
-                    adminDiv.innerHTML = `
-                        <img src="${admin.userId.img}" alt="${admin.userId.name}" title="${admin.userId.name}"
-                            style="width: 50px;
-                            height: 50px;
-                            border-radius: 30px;
-                            object-fit: cover;"/>
-                        <h4>${admin.userId.name}</h4>
-                    `;
-                    project_admins.appendChild(adminDiv);
-                });
-            }
-            const project_members = document.getElementById('project_members');
-            project_members.innerHTML = '';
-            project_members.innerHTML = `<h2>PROJECT MEMBERS</h2>`;
-            
-            if(data.length === 0 || data === undefined){
-                project_members.innerHTML = '<div class="center-form"><h3>No members found</h3></div>';
-            }else{
-                data.forEach(member => {
-                    const memberDiv = document.createElement('div');
-                    memberDiv.classList.add('member');
-                    memberDiv.innerHTML = `
-                    <img src="${member.userId.img}" alt="${member.userId.name}" title="${member.userId.name}" 
-                        style="width: 50px;
-                        height: 50px;
-                        border-radius: 30px;
-                        object-fit: cover;"/>
-                    <h4>${member.userId.name}</h4>
-                    `;        
-                    project_members.appendChild(memberDiv);
-                });
-            }
-          })
-          .catch(error => {
-              console.error('Error fetching members:', error);
-          });
-      
+        fetchtasks(projectId, 'alltasks');
 
         } else {
             const project_admins = document.getElementById('project_admins');
@@ -270,149 +127,7 @@ projectselect.addEventListener('change', function() {
     }
 
     const projectId = selectedOption.value;
-        fetch(`/tasks/${projectId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(tasks => {
-            const taskList = document.getElementById('taskList');
-            taskList.innerHTML = ''; 
-            taskList.innerHTML = 
-            `<div id="column_guide" class="task-list-header">
-                  <h3>Task</h3>
-                  <div class="task-list-header-right">
-                    <h3>End Date</h3>
-                    <h3>Status</h3>
-                    <h3>Priority</h3>
-                    <h3>Assignees</h3>
-                    <h3>Edit</h3>
-                  </div>
-                </div>`; 
-            console.log(tasks);
-            if (tasks.length === 0) {
-                taskList.innerHTML = '<div class="center-form"><h3>No tasks found</h3></div>';
-            } else {
-                tasks.forEach(task => {
-                    const taskDiv = document.createElement('div');
-                    taskDiv.classList.add('task-cuadro');
-                   
-                    taskDiv.innerHTML = `
-                        <div class="task-list-header">
-                            <h3>Task</h3>
-                            <div class="task-list-header-right">
-                            <h3>End Date</h3>
-                            <h3>Status</h3>
-                            <h3>Priority</h3>
-                            <h3>Assignees</h3>
-                            <h3>Edit</h3>
-                            </div>
-                        </div>
-                        <div class="task">
-                            <h4>${task.name}</h4>
-                            <div class="task-inner">
-                                <h4>${task.enddate || 'N/A'}</h4>
-                                <div class="task-status">
-                                <h4>${task.status || 'not started'}</h4>
-                                </div>
-                                <div class="task-priority">
-                                <h4>${task.priority || 'low'}</h4>
-                                </div>  
-                                <div class="center-form">        
-                                <div class="member_circles">
-                                <!-- Aquí irán las imágenes de los asignados -->
-                                </div>
-                                </div>
-                                <div class="task-edit">
-                                <a href="/task/delete/${task._id}" class="material-symbols-outlined" style="color:red;">delete</a>
-                                
-                            </div>
-                        </div>
-                    `;
-                    // agregar distintas clases a clase task, segun el estado de la tarea
-                    if (task.status === 'completed') {
-                        taskDiv.querySelector('.task').classList.add('green');
-                    }
-                    if (task.status === 'in progress') {
-                        taskDiv.querySelector('.task').classList.add('orange');
-                    }
-                    if (task.status === 'not started') {
-                        taskDiv.querySelector('.task').classList.add('red');
-                    }
-                    // se agregan imágenes de los assignedUsers
-                    const assigneeDiv = taskDiv.querySelector('.member_circles');
-                    if (task.assignedUsers && task.assignedUsers.length > 0) {
-                        task.assignedUsers.forEach(user => {
-                            const assigneeImg = document.createElement('img');
-                            assigneeImg.src = user.img; 
-                            assigneeImg.alt = user.name; 
-                            assigneeImg.style.width = '50px';
-                            assigneeImg.style.height = '50px';
-                            assigneeImg.title = user.name; 
-                            assigneeDiv.appendChild(assigneeImg);
-                        });
-                    } else {
-                        assigneeDiv.innerHTML += '<p>No assignees</p>';
-                    }
-
-                    taskList.appendChild(taskDiv);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching tasks:', error);
-        });
-        // team members and admins
-       fetch(`/members/${projectId}`)
-       .then(response => response.json())
-          .then(data => {
-            const project_admins = document.getElementById('project_admins');
-            project_admins.innerHTML = '';
-            project_admins.innerHTML = `<h2>PROJECT ADMINS</h2>`;
-            if(data.length === 0 || data === undefined){
-                project_admins.innerHTML = '<div class="center-form"><h3>No admins found</h3></div>';
-            }else{
-                data.filter(admin => admin.role === 'admin').forEach(admin => {
-                    const adminDiv = document.createElement('div');
-                    adminDiv.classList.add('admin');
-                    adminDiv.innerHTML = `
-                        <img src="${admin.userId.img}" alt="${admin.userId.name}" title="${admin.userId.name}"
-                            style="width: 50px;
-                            height: 50px;
-                            border-radius: 30px;
-                            object-fit: cover;"/>
-                        <h4>${admin.userId.name}</h4>
-                    `;
-                    project_admins.appendChild(adminDiv);
-                });
-            }
-            const project_members = document.getElementById('project_members');
-            project_members.innerHTML = '';
-            project_members.innerHTML = `<h2>PROJECT MEMBERS</h2>`;
-            
-            if(data.length === 0 || data === undefined){
-                project_members.innerHTML = '<div class="center-form"><h3>No members found</h3></div>';
-            }else{
-                data.forEach(member => {
-                    const memberDiv = document.createElement('div');
-                    memberDiv.classList.add('member');
-                    memberDiv.innerHTML = `
-                    <img src="${member.userId.img}" alt="${member.userId.name}" title="${member.userId.name}" 
-                        style="width: 50px;
-                        height: 50px;
-                        border-radius: 30px;
-                        object-fit: cover;"/>
-                    <h4>${member.userId.name}</h4>
-                    `;        
-                    project_members.appendChild(memberDiv);
-                });
-            }
-          })
-          .catch(error => {
-              console.error('Error fetching members:', error);
-          });
+        
 });
 
 
@@ -598,4 +313,169 @@ function verifygrid2(){
         formgroup = document.getElementById('members_formgroup2');
         formgroup.remove();
     }
+}
+function changefilter (filteroption) {
+    const selectedoption =
+      projectselect.options[projectselect.selectedIndex].value;
+    fetchtasks(selectedoption, filteroption);
+}
+function fetchtasks(projectId, filter) {
+    fetch(`/tasks/${projectId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(tasks => {
+            if (filter === "completed") {
+                tasks = tasks.filter((task) => task.status === "completed");
+            } else if (filter === "incompleted") {
+                tasks = tasks.filter((task) => task.status === "incompleted");
+            } else if (filter === "notstarted") {
+                tasks = tasks.filter((task) => task.status === "not started");
+            }
+  
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = ''; 
+            taskList.innerHTML = 
+            `<div id="column_guide" class="task-list-header">
+                  <h3>Task</h3>
+                  <div class="task-list-header-right">
+                    <h3>End Date</h3>
+                    <h3>Status</h3>
+                    <h3>Priority</h3>
+                    <h3>Assignees</h3>
+                    <h3>Edit</h3>
+                  </div>
+                </div>`; 
+            console.log(tasks);
+            if (tasks.length === 0) {
+                taskList.innerHTML = '<div class="center-form"><h3>No tasks found</h3></div>';
+            } else {
+                tasks.forEach(task => {
+                    
+                    const taskDiv = document.createElement('div');
+                    taskDiv.classList.add('task-cuadro');
+                   
+                    taskDiv.innerHTML = `
+                        <div class="task-list-header">
+                            <h3>Task</h3>
+                            <div class="task-list-header-right">
+                            <h3>End Date</h3>
+                            <h3>Status</h3>
+                            <h3>Priority</h3>
+                            <h3>Assignees</h3>
+                            <h3>Edit</h3>
+                            </div>
+                        </div>
+                        <div class="task">
+                            <h4>${task.name}</h4>
+                            <div class="task-inner">
+                                <h4>${
+                                  task.enddate
+                                    ? new Date(task.enddate)
+                                        .toISOString()
+                                        .split("T")[0]
+                                    : "N/A"
+                                }</h4>
+                                <div class="task-status">
+                                <h4>${task.status || 'not started'}</h4>
+                                </div>
+                                <div class="task-priority">
+                                <h4">${task.priority || 'low'}</h4>
+                                </div>  
+                                <div class="center-form">        
+                                <div class="member_circles">
+                                <!-- Aquí irán las imágenes de los asignados -->
+                                </div>
+                                </div>
+                                <div class="task-edit">
+                                <a href="/task/delete/${task._id}" class="material-symbols-outlined" style="color:red;">delete</a>
+                                
+                            </div>
+                        </div>
+                    `;
+                    // agregar distintas clases a clase task, segun el estado de la tarea
+                    if (task.status === 'completed') {
+                        taskDiv.querySelector('.task').classList.add('green');
+                    }
+                    if (task.status === 'incompleted') {
+                        taskDiv.querySelector('.task').classList.add('orange');
+                    }
+                    if (task.status === 'not started') {
+                        taskDiv.querySelector('.task').classList.add('red');
+                    }
+                    // se agregan imágenes de los assignedUsers
+                    const assigneeDiv = taskDiv.querySelector('.member_circles');
+                    if (task.assignedUsers && task.assignedUsers.length > 0) {
+                        task.assignedUsers.forEach(user => {
+                            const assigneeImg = document.createElement('img');
+                            assigneeImg.src = user.img; 
+                            assigneeImg.alt = user.name; 
+                            assigneeImg.style.width = '50px';
+                            assigneeImg.style.height = '50px';
+                            assigneeImg.title = user.name; 
+                            assigneeDiv.appendChild(assigneeImg);
+                        });
+                    } else {
+                        assigneeDiv.innerHTML += '<p>No assignees</p>';
+                    }
+
+                    taskList.appendChild(taskDiv);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching tasks:', error);
+        });
+        // team members and admins
+       fetch(`/members/${projectId}`)
+       .then(response => response.json())
+          .then(data => {
+            const project_admins = document.getElementById('project_admins');
+            project_admins.innerHTML = '';
+            project_admins.innerHTML = `<h2>PROJECT ADMINS</h2>`;
+            if(data.length === 0 || data === undefined){
+                project_admins.innerHTML = '<div class="center-form"><h3>No admins found</h3></div>';
+            }else{
+                data.filter(admin => admin.role === 'admin').forEach(admin => {
+                    const adminDiv = document.createElement('div');
+                    adminDiv.classList.add('admin');
+                    adminDiv.innerHTML = `
+                        <img src="${admin.userId.img}" alt="${admin.userId.name}" title="${admin.userId.name}"
+                            style="width: 50px;
+                            height: 50px;
+                            border-radius: 30px;
+                            object-fit: cover;"/>
+                        <h4>${admin.userId.name}</h4>
+                    `;
+                    project_admins.appendChild(adminDiv);
+                });
+            }
+            const project_members = document.getElementById('project_members');
+            project_members.innerHTML = '';
+            project_members.innerHTML = `<h2>PROJECT MEMBERS</h2>`;
+            
+            if(data.length === 0 || data === undefined){
+                project_members.innerHTML = '<div class="center-form"><h3>No members found</h3></div>';
+            }else{
+                data.forEach(member => {
+                    const memberDiv = document.createElement('div');
+                    memberDiv.classList.add('member');
+                    memberDiv.innerHTML = `
+                    <img src="${member.userId.img}" alt="${member.userId.name}" title="${member.userId.name}" 
+                        style="width: 50px;
+                        height: 50px;
+                        border-radius: 30px;
+                        object-fit: cover;"/>
+                    <h4>${member.userId.name}</h4>
+                    `;        
+                    project_members.appendChild(memberDiv);
+                });
+            }
+          })
+          .catch(error => {
+              console.error('Error fetching members:', error);
+          });
 }

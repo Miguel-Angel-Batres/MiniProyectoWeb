@@ -31,7 +31,7 @@
   <body>
     <div class="grid-container">
       <!-- Header -->
-<header class="header">
+      <header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-symbols-outlined">menu</span>
         </div>
@@ -141,7 +141,11 @@
                 <h2>Project Name</h2>
                 <div>
                   <input type="text" id="project_name" />
-                  <span class="material-symbols-outlined edit-icon">edit</span>
+                  <span
+                    class="material-symbols-outlined edit-icon"
+                    onclick="activeprojectnameedit()"
+                    >edit</span
+                  >
                 </div>
               </div>
               <hr />
@@ -149,7 +153,11 @@
                 <h2>Project Description</h2>
                 <div>
                   <input type="text" id="project_description" />
-                  <span class="material-symbols-outlined edit-icon">edit</span>
+                  <span
+                    class="material-symbols-outlined edit-icon"
+                    onclick="activeprojectdescriptionedit()"
+                    >edit</span
+                  >
                 </div>
               </div>
               <hr />
@@ -183,7 +191,7 @@
               <div class="setting">
                 <h2>Project Members</h2>
                 <div class="center-form">
-                  <div class="member_circles">
+                  <div class="member_circles" id="members_circles">
                     <img
                       src="https://www.w3schools.com/howto/img_avatar.png"
                       alt=""
@@ -200,7 +208,7 @@
               <div class="setting">
                 <h2>Project admins</h2>
                 <div class="center-form">
-                  <div class="member_circles">
+                  <div class="member_circles" id="admin_circles">
                     <img
                       src="https://www.w3schools.com/howto/img_avatar.png"
                       alt=""
@@ -229,7 +237,11 @@
                 <h2>Profile Name</h2>
                 <div>
                   <input type="text" id="profile_name" />
-                  <span class="material-symbols-outlined edit-icon">edit</span>
+                  <span
+                    class="material-symbols-outlined edit-icon"
+                    onclick="activeprofilenameedit()"
+                    >edit</span
+                  >
                 </div>
               </div>
               <hr />
@@ -237,7 +249,11 @@
                 <h2>Profile Password</h2>
                 <div>
                   <input type="password" id="profile_password" />
-                  <span class="material-symbols-outlined edit-icon">edit</span>
+                  <span
+                    class="material-symbols-outlined edit-icon"
+                    onclick="activeprofilepasswordedit()"
+                    >edit</span
+                  >
                 </div>
               </div>
               <hr />
@@ -270,9 +286,114 @@
           </div>
           <div></div>
         </div>
+        <div class="floating-settings" id="floating_settings">
+          <div class="floating-content">
+            <div id="editprojectname" style="display: none">
+              <div class="form-group">
+                <label for="oldname">Old Name</label>
+                <input type="text" id="oldprojectname" />
+                <label for="newname">New Name</label>
+                <input type="text" id="newprojectname" />
+              </div>
+              <div class="center-form">
+                <button onclick="editProjectName()">Save</button>
+              </div>
+            </div>
+            <div id="editprojectdescription" style="display: none">
+              <div class="evenly column-form form-group">
+                <!-- old description -->
+                <label for="projectdescription">Old Project Description</label>
+                <textarea
+                  name="projectdescription"
+                  id="oldprojectdescription"
+                  readonly
+                ></textarea>
+                <!-- new description -->
+                <label for="projectdescription">New Project Description</label>
+                <textarea
+                  name="projectdescription"
+                  id="newprojectdescription"
+                ></textarea>
+              </div>
+              <div class="center-form">
+                <button onclick="editProjectDescription()">Save</button>
+              </div>
+            </div>
+
+            <div id="editprojectmembers" style="display: none"></div>
+            <div id="editprojectadmins" style="display: none"></div>
+
+            <div id="editprofilename" style="display: none">
+              <div class="form-group">
+                <label for="oldname">Old Name</label>
+                <input type="text" id="oldname" />
+                <label for="newname">New Name</label>
+                <input type="text" id="newname" />
+              </div>
+              <div class="center-form">
+                <button onclick="">Save</button>
+              </div>
+            </div>
+            <div id="editprofilepassword" style="display: none">
+              <div class="form-group">
+                <label for="oldpassword">Old Password</label>
+                <input type="password" id="oldpassword" />
+                <label for="newpassword">New Password</label>
+                <input type="password" id="newpassword" />
+                <label for="confirmpassword">Confirm Password</label>
+                <input type="password" id="confirmpassword" />
+              </div>
+              <div class="center-form">
+                <button onclick="">Save</button>
+              </div>
+            </div>
+          </div>
+          <div class="closebutton">
+            <span class="material-symbols-outlined" onclick="closeFloating()"
+              >close</span
+            >
+          </div>
+        </div>
       </main>
       <!-- Main End -->
       <script>
+        function activeprojectnameedit() {
+          document.getElementById("floating_settings").style.display = "flex";
+          document.getElementById("editprojectname").style.display = "block";
+        }
+        function activeprojectdescriptionedit() {
+          document.getElementById("floating_settings").style.display = "flex";
+          document.getElementById("editprojectdescription").style.display =
+            "block";
+        }
+        function activeprojectmembersedit() {
+          document.getElementById("floating_settings").style.display = "flex";
+          document.getElementById("editprojectmembers").style.display = "block";
+        }
+        function activeprojectadminsedit() {
+          document.getElementById("floating_settings").style.display = "flex";
+          document.getElementById("editprojectadmins").style.display = "block";
+        }
+        function activeprofilenameedit() {
+          document.getElementById("floating_settings").style.display = "flex";
+          document.getElementById("editprofilename").style.display = "block";
+        }
+        function activeprofilepasswordedit() {
+          document.getElementById("floating_settings").style.display = "flex";
+          document.getElementById("editprofilepassword").style.display =
+            "block";
+        }
+        function closeFloating() {
+          document.getElementById("floating_settings").style.display = "none";
+          document.getElementById("editprojectname").style.display = "none";
+          document.getElementById("editprojectdescription").style.display =
+            "none";
+          document.getElementById("editprojectmembers").style.display = "none";
+          document.getElementById("editprojectadmins").style.display = "none";
+          document.getElementById("editprofilename").style.display = "none";
+          document.getElementById("editprofilepassword").style.display = "none";
+        }
+
         function activeprofilesettings() {
           document.querySelector(".project-settings").classList.add("inactive");
           document.querySelector(".profile-settings").classList.add("active");
@@ -285,6 +406,122 @@
             .querySelector(".profile-settings")
             .classList.remove("active");
         }
+        document.addEventListener("DOMContentLoaded", () => {
+          const projectSelect = document.getElementById("project-select");
+          const projectId = projectSelect.value;
+
+          fetch(`/projects/${projectId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch project data");
+              }
+              return response.json();
+            })
+            .then((project) => {
+              document.getElementById("project_name").value =
+                project.name || "";
+              document.getElementById("project_description").value =
+                project.description || "";
+
+              const projectImage = document.getElementById(
+                "projectsettingimage"
+              );
+              if (project.image) {
+                projectImage.src = project.image;
+                projectImage.alt = project.name;
+              } else {
+                projectImage.src = "";
+                projectImage.alt = "No image";
+              }
+
+              const members = project.assignedUsers.filter(
+                (user) => user.role === "miembro"
+              );
+              const admins = project.assignedUsers.filter(
+                (user) => user.role === "admin"
+              );
+
+              const memberCircles = document.getElementById("members_circles");
+              memberCircles.innerHTML = "";
+              if (members.length > 0) {
+                const maxDisplay = 4;
+
+                members.slice(0, maxDisplay).forEach((assignedUser) => {
+                  const imageUser = document.createElement("img");
+                  imageUser.src =
+                    assignedUser.userId.img ||
+                    "https://www.w3schools.com/howto/img_avatar.png"; // Imagen del usuario
+                  imageUser.alt = assignedUser.userId.name || "User";
+                  imageUser.title = assignedUser.userId.name;
+                  memberCircles.appendChild(imageUser);
+                });
+
+                if (members.length > maxDisplay) {
+                  const extraCount = members.length - maxDisplay;
+
+                  const extraImage = document.createElement("div");
+                  extraImage.classList.add("extra-members");
+                  extraImage.textContent = `+${extraCount}`;
+                  memberCircles.appendChild(extraImage);
+                }
+              } else {
+                memberCircles.innerHTML = "<p>No members assigned</p>";
+              }
+
+              const adminCircles = document.getElementById("admin_circles");
+              adminCircles.innerHTML = "";
+              if (admins.length > 0) {
+                const maxDisplay = 4;
+
+                admins.slice(0, maxDisplay).forEach((assignedUser) => {
+                  const imageAdmin = document.createElement("img");
+                  imageAdmin.src =
+                    assignedUser.userId.img ||
+                    "https://www.w3schools.com/howto/img_avatar.png"; // Imagen del usuario
+                  imageAdmin.alt = assignedUser.userId.name || "Admin";
+                  imageAdmin.title = assignedUser.userId.name;
+                  adminCircles.appendChild(imageAdmin);
+                });
+
+                if (admins.length > maxDisplay) {
+                  const extraCount = admins.length - maxDisplay;
+
+                  const extraImage = document.createElement("div");
+                  extraImage.classList.add("extra-members");
+                  extraImage.textContent = `+${extraCount}`;
+                  adminCircles.appendChild(extraImage);
+                }
+              } else {
+                adminCircles.innerHTML = "<p>No admins assigned</p>";
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching project data:", error);
+            });
+          fetch(`/profile/settings`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch user data");
+              }
+              return response.json();
+            })
+            .then((user) => {
+              document.getElementById("profile_name").value = user.name || "";
+              document.getElementById("profile_password").value =
+                "examplepassword";
+
+              const profileImage = document.getElementById(
+                "profilesettingimage"
+              );
+              if (user.img) {
+                profileImage.src = user.img;
+                profileImage.alt = user.name;
+              } else {
+                profileImage.src = "";
+                profileImage.alt = "No image";
+              }
+            });
+        });
       </script>
     </div>
   </body>

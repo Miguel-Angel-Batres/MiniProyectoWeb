@@ -37,6 +37,33 @@ app.get('/login', (req, res) => {
     
     res.render('login');
 })
+app.get('/projects/:id', async (req, res) => {
+    try {
+      const projectId = req.params.id;
+      const project = await Project.findById(projectId)
+        .populate('assignedUsers.userId', 'name img');
+      if (!project) {
+        return res.status(404).json({ error: 'Project not found' });
+      }
+      res.json(project); 
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+app.get('/profile/settings', async (req, res) => {
+    try {
+      const userId = req.session.userId;
+      const user = await usermodel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+            }
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+        }
+});
 app.get('/home', async (req, res) => {
     try {
         if (!req.session.userId) {

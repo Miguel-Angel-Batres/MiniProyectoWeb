@@ -31,7 +31,7 @@
   <body>
     <div class="grid-container">
       <!-- Header -->
-<header class="header">
+      <header class="header">
         <div class="menu-icon" onclick="openSidebar()">
           <span class="material-symbols-outlined">menu</span>
         </div>
@@ -131,35 +131,60 @@
           </select>
         </div>
         <div class="main-tasks">
-          <div class="task-header">
+          <div class="task-header" id="filterheader">
             <div class="task-title">
               <h2>TASKS</h2>
             </div>
             <div class="task-filter">
-              <div class="filterbox" onclick="toggleFilter(this)">
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'blue'); changefilter('alltasks');"
+                id="startfilter"
+              >
                 <h4>All Tasks</h4>
               </div>
-              <div class="filterbox" onclick="toggleFilter(this)">
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'green'); changefilter('completed')"
+              >
                 <h4>Completed Tasks</h4>
               </div>
-              <div class="filterbox" onclick="toggleFilter(this)">
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'orange'); changefilter('incompleted')"
+              >
                 <h4>Incompleted Tasks</h4>
+              </div>
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'red'); changefilter('notstarted')"
+              >
+                <h4>Not Started Tasks</h4>
               </div>
             </div>
           </div>
-          <div class="task-list" id="taskList">
-           
-          </div>
+          <div class="task-list" id="taskList"></div>
         </div>
       </main>
       <!-- Main End -->
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        toggleFilter(document.getElementById("startfilter"), "blue");
         const projectselect = document.getElementById("project-select");
         const selectedoption =
           projectselect.options[projectselect.selectedIndex].value;
 
+        fetchtasks(selectedoption);
+      });
+      function changefilter(filteroption) {
+        const projectselect = document.getElementById("project-select");
+        const selectedoption =
+          projectselect.options[projectselect.selectedIndex].value;
+        fetchtasks(selectedoption, filteroption);
+      }
+
+      function fetchtasks(selectedoption, filter) {
         fetch(`/tasks/user/${selectedoption}`)
           .then((res) => {
             if (!res.ok) {
@@ -168,6 +193,13 @@
             return res.json();
           })
           .then((tasks) => {
+            if (filter === "completed") {
+              tasks = tasks.filter((task) => task.status === "completed");
+            } else if (filter === "incompleted") {
+              tasks = tasks.filter((task) => task.status === "incompleted");
+            } else if (filter === "notstarted") {
+              tasks = tasks.filter((task) => task.status === "not started");
+            }
             const taskList = document.getElementById("taskList");
             taskList.innerHTML = "";
             taskList.innerHTML = `<div id="column_guide" class="task-list-header">
@@ -202,7 +234,13 @@
                         <div class="task">
                             <h4>${task.name}</h4>
                             <div class="task-inner changewidth">
-                                <h4>${task.enddate ? new Date(task.enddate).toISOString().split('T')[0] : 'N/A'}</h4>
+                                <h4>${
+                                  task.enddate
+                                    ? new Date(task.enddate)
+                                        .toISOString()
+                                        .split("T")[0]
+                                    : "N/A"
+                                }</h4>
                                 <div class="task-status">
                                 <h4>${task.status || "not started"}</h4>
                                 </div>
@@ -222,15 +260,15 @@
                             </div>
                         </div>
                     `;
-                    if (task.status === 'completed') {
-                        taskDiv.querySelector('.task').classList.add('green');
-                    }
-                    if (task.status === 'in progress') {
-                        taskDiv.querySelector('.task').classList.add('orange');
-                    }
-                    if (task.status === 'not started') {
-                        taskDiv.querySelector('.task').classList.add('red');
-                    }
+                if (task.status === "completed") {
+                  taskDiv.querySelector(".task").classList.add("green");
+                }
+                if (task.status === "in progress") {
+                  taskDiv.querySelector(".task").classList.add("orange");
+                }
+                if (task.status === "not started") {
+                  taskDiv.querySelector(".task").classList.add("red");
+                }
                 // se agregan imágenes de los assignedUsers
                 const assigneeDiv = taskDiv.querySelector(".member_circles");
                 if (task.assignedUsers && task.assignedUsers.length > 0) {
@@ -251,7 +289,7 @@
               });
             }
           });
-      });
+      }
     </script>
   </body>
 </html>

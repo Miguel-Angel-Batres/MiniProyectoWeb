@@ -155,19 +155,35 @@
         </div>
 
         <div class="main-tasks">
-          <div class="task-header">
+          <div class="task-header" id="filterheader">
             <div class="task-title">
               <h2>TASKS</h2>
             </div>
             <div class="task-filter">
-              <div class="filterbox" onclick="toggleFilter(this)">
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'blue'); changefilter('alltasks');"
+                id="startfilter"
+              >
                 <h4>All Tasks</h4>
               </div>
-              <div class="filterbox" onclick="toggleFilter(this)">
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'green'); changefilter('completed')"
+              >
                 <h4>Completed Tasks</h4>
               </div>
-              <div class="filterbox" onclick="toggleFilter(this)">
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'orange'); changefilter('incompleted')"
+              >
                 <h4>Incompleted Tasks</h4>
+              </div>
+              <div
+                class="filterbox"
+                onclick="toggleFilter(this,'red'); changefilter('notstarted')"
+              >
+                <h4>Not Started Tasks</h4>
               </div>
             </div>
           </div>
@@ -175,7 +191,10 @@
         </div>
       </main>
       <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        function changefilter(filteroption) {
+          fetchtasks(filteroption);
+        }
+        function fetchtasks(filteroption) {
           fetch(`/alltasks`)
             .then((res) => {
               if (!res.ok) {
@@ -184,6 +203,13 @@
               return res.json();
             })
             .then((tasks) => {
+              if (filteroption === "completed") {
+                tasks = tasks.filter((task) => task.status === "completed");
+              } else if (filteroption === "incompleted") {
+                  tasks = tasks.filter((task) => task.status === "incompleted");
+              } else if (filteroption === "notstarted") {
+                  tasks = tasks.filter((task) => task.status === "not started");
+              }
               const taskList = document.getElementById("taskList");
               taskList.innerHTML = "";
               taskList.innerHTML = `<div id="column_guide" class="task-list-header">
@@ -267,6 +293,10 @@
                 });
               }
             });
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+          toggleFilter(document.getElementById("startfilter"), "blue");
+          fetchtasks("alltasks");
         });
       </script>
       <!-- Main End -->
