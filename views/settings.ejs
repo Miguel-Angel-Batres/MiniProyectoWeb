@@ -357,6 +357,8 @@
       </main>
       <!-- Main End -->
       <script>
+        const projectSelect = document.getElementById("project-select");
+        
         function activeprojectnameedit() {
           document.getElementById("floating_settings").style.display = "flex";
           document.getElementById("editprojectname").style.display = "block";
@@ -407,7 +409,6 @@
             .classList.remove("active");
         }
         document.addEventListener("DOMContentLoaded", () => {
-          const projectSelect = document.getElementById("project-select");
           const projectId = projectSelect.value;
 
           fetch(`/projects/${projectId}`)

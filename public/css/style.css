@@ -191,6 +191,7 @@ hr {
     border-radius: 10px;
     overflow: hidden;
 }
+
   
   .dropdown-menu p {
     margin: 0;
@@ -346,7 +347,14 @@ hr {
     border-bottom: 2px solid rgb(61, 68, 80);
     transition:  border-color 0.5s ease;
 }
-
+.task-edit a span{
+    font-size: 3rem;
+    cursor: pointer;    
+    transition: all 0.3s;
+}
+.task-edit a span:hover{
+    transform: scale(1.4);
+}
 .task-filter {
     display: flex;
     flex-direction: row;
@@ -712,6 +720,7 @@ button:hover{
     cursor: pointer;
 }
 .floating-content textarea{
+    width: 250px;
     height: 80px;
 }
 .floating-content .form-group{

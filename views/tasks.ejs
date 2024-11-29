@@ -169,9 +169,9 @@
       <!-- Main End -->
     </div>
     <script>
+      const projectselect = document.getElementById("project-select");
       document.addEventListener("DOMContentLoaded", () => {
         toggleFilter(document.getElementById("startfilter"), "blue");
-        const projectselect = document.getElementById("project-select");
         const selectedoption =
           projectselect.options[projectselect.selectedIndex].value;
 
@@ -183,7 +183,12 @@
           projectselect.options[projectselect.selectedIndex].value;
         fetchtasks(selectedoption, filteroption);
       }
-
+      function activeedittask(){
+        
+        document.getElementById("edittask").classList.toggle("active");
+        //si se hace click fuera del dropdown, se cierra
+        
+      }
       function fetchtasks(selectedoption, filter) {
         fetch(`/tasks/user/${selectedoption}`)
           .then((res) => {
@@ -252,22 +257,33 @@
                                 <!-- Aquí irán las imágenes de los asignados -->
                                 </div>
                                 </div>
-                                <div class="task2-edit">
-                                <span class="material-symbols-outlined">
-                                keyboard_arrow_down
-                                </span>
-                                </div>
+                                <div class="task-edit"">
+x                                </div>
                             </div>
                         </div>
                     `;
                 if (task.status === "completed") {
                   taskDiv.querySelector(".task").classList.add("green");
                 }
-                if (task.status === "in progress") {
+                if (task.status === "incompleted") {
                   taskDiv.querySelector(".task").classList.add("orange");
+                  dropdownedit = taskDiv.querySelector(".task-edit");
+                  dropdownedit.innerHTML = `
+                                <a href="/update/complete/${task._id}">
+                                  <span class="material-symbols-outlined" style="color: green;"
+                                  >check</span>  
+                                </a>
+                                `;
                 }
                 if (task.status === "not started") {
                   taskDiv.querySelector(".task").classList.add("red");
+                  dropdownedit = taskDiv.querySelector(".task-edit");
+                  dropdownedit.innerHTML = `
+                                <a href="/update/start/${task._id}">
+                                  <span class="material-symbols-outlined" style="color: green;"
+                                  >play_arrow</span>  
+                                </a>
+                                `;
                 }
                 // se agregan imágenes de los assignedUsers
                 const assigneeDiv = taskDiv.querySelector(".member_circles");
@@ -290,6 +306,10 @@
             }
           });
       }
+      projectselect.addEventListener("change", (e) => {
+        const selectedoption = e.target.options[e.target.selectedIndex].value;
+        fetchtasks(selectedoption);
+      });
     </script>
   </body>
 </html>

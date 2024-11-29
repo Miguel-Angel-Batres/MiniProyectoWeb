@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 projectname.textContent = name;
                 projectname.style.display = 'block';
             } else {
-                projectname.style.display = 'none';
+                projectname.style.display = 'none';exit
+                
             }
     
             if (description) {
@@ -127,7 +128,7 @@ projectselect.addEventListener('change', function() {
     }
 
     const projectId = selectedOption.value;
-        
+    fetchtasks(projectId, 'alltasks');
 });
 
 

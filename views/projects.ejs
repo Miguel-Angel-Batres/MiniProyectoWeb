@@ -409,7 +409,7 @@
                       <span class="material-symbols-outlined delete-icon2"
                         >delete</span
                       >
-                    </div>
+                    </diddv>
                   </div>
                 </div>
               </div>
@@ -420,13 +420,17 @@
           </form>
         </div>
         <script>
-          const projectUsers = <%- JSON.stringify(projects.map(project => ({
-            _id: project._id,
-            assignedUsers: project.assignedUsers.map(user => ({
+        const projectUsers = <%- JSON.stringify(projects.map(project => ({
+          _id: project._id,
+          assignedUsers: project.assignedUsers
+            .filter(user => user.userId) // Filtra usuarios válidos
+            .map(user => ({
               _id: user.userId._id,
               name: user.userId.name
             }))
-          }))) %>;
+        }))) %>;
+
+
         </script>
       </main>
       <!-- Main End -->
