@@ -70,19 +70,22 @@ app.get('/home', async (req, res) => {
     try {
         if (!req.session.userId) {
             return res.redirect('/login');
-        }else{
-            const numprojects =  await Project.countDocuments({ creatorUserId: req.session.userId });
-            const numtasks = await Task.countDocuments({ assignedUsers: req.session.userId });
-            //usuarios registrados en todos mis proyectos   
-            const projects = await Project.find({}, "assignedUsers"); 
+        } else {
+            const userId = req.session.userId; 
+            const [numprojects, numtasks, projects] = await Promise.all([
+                Project.countDocuments({ creatorUserId: userId }),
+                Task.countDocuments({ assignedUsers: userId }),
+                Project.find({}, "assignedUsers").lean()
+            ]);
             const totalUsers = projects.reduce((sum, project) => sum + project.assignedUsers.length, 0);
-            return res.render('home', {numprojects, numtasks, totalUsers});
+            return res.render('home', { numprojects, numtasks, totalUsers });
         }
-        
     } catch (error) {
         console.error(error);
-    } 
-})
+        res.status(500).send("Error interno del servidor");
+    }
+});
+
 
 
 app.post('/signup',upload.single('userimg'), async (req, res) => {
@@ -357,18 +360,18 @@ async function main() {
       
 
 
-    const result = await Project.aggregate([
-        { $unwind: "$assignedUsers" },
-        { $group: { 
-          _id: "$name",              
-          userCount: { $sum: 1 }     
-        }},
-        { $group: {_id: null, avgUsers: { $avg: "$userCount" }}},
-        { $project: { _id: 0, avgUsers: 1 }}
+    // const result = await Project.aggregate([
+    //     { $unwind: "$assignedUsers" },
+    //     { $group: { 
+    //       _id: "$name",              
+    //       userCount: { $sum: 1 }     
+    //     }},
+    //     { $group: {_id: null, avgUsers: { $avg: "$userCount" }}},
+    //     { $project: { _id: 0, avgUsers: 1 }}
 
-      ]);
+    //   ]);
       
-      console.log(result);
+    //   console.log(result);
       
       
       
@@ -378,7 +381,7 @@ async function main() {
       console.error('Error al guardar los datos:', error);
     }
   }
-    main();  
+    // main();  
 app.post('/login', async (req, res) => {
     try {
         const check = await usermodel.findOne({

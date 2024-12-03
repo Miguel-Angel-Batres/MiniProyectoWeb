@@ -120,7 +120,7 @@
       </aside>
       <!-- Sidebar End -->
       <!-- Main -->
-      <main class="main-container">
+      <main class="main-container" style="overflow-y: hidden;">
         <div class="project-settings">
           <div class="main-title" style="padding-right: 20px">
             <div style="width: 120px"></div>
@@ -140,24 +140,28 @@
               <div class="setting">
                 <h2>Project Name</h2>
                 <div>
+                  <form action="/changeprojectname" method="POST">
                   <input type="text" id="project_name" />
                   <span
                     class="material-symbols-outlined edit-icon"
                     onclick="activeprojectnameedit()"
                     >edit</span
                   >
+                </form>
                 </div>
               </div>
               <hr />
               <div class="setting">
                 <h2>Project Description</h2>
                 <div>
+                  <form action="/changeprojectdescription" method="POST">
                   <input type="text" id="project_description" />
                   <span
                     class="material-symbols-outlined edit-icon"
                     onclick="activeprojectdescriptionedit()"
                     >edit</span
                   >
+                </form>
                 </div>
               </div>
               <hr />
@@ -176,6 +180,7 @@
                   >
                     <span class="material-symbols-outlined">edit</span>
                   </label>
+                  <form action="/changeprojectimage" method="POST">
                   <input
                     type="file"
                     id="projectsettingsimagefile"
@@ -184,6 +189,7 @@
                     required
                     hidden
                   />
+                 </form>
                 </div>
               </div>
             </div>
@@ -201,7 +207,9 @@
                       alt=""
                     />
                   </div>
-                  <span class="material-symbols-outlined edit-icon">edit</span>
+                  <span class="material-symbols-outlined edit-icon"
+                    onclick="activeprojectmembersedit()"
+                    >edit</span>
                 </div>
               </div>
               <hr />
@@ -218,7 +226,9 @@
                       alt=""
                     />
                   </div>
-                  <span class="material-symbols-outlined edit-icon">edit</span>
+                  <span class="material-symbols-outlined edit-icon"
+                    onclick="activeprojectadminsedit()"
+                  >edit</span>
                 </div>
               </div>
 
@@ -320,8 +330,180 @@
               </div>
             </div>
 
-            <div id="editprojectmembers" style="display: none"></div>
-            <div id="editprojectadmins" style="display: none"></div>
+            <div id="editprojectmembers" style="display: none">
+              <div class="evenly search-bar">
+                <!-- buscar usuario -->
+                <label for="searchuser">
+                  <span class="material-symbols-outlined">search</span>
+                </label>
+                <input type="text" id="searchuser" placeholder="Search User.." style="width: 150px;"/>
+                <!-- invitar usuario -->
+                <button onclick="inviteUser()">
+                  <span class="material-symbols-outlined">add</span>Invite
+                </button>
+
+              </div>
+              <div >
+                <div class="member_circles separated_circles" style="  display: grid;
+                grid-template-columns: repeat(4, auto);
+                justify-content:space-between;
+                padding: 10px;
+                grid-row-gap: 20px;" 
+                id="members_circles">
+                 
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  
+              </div>
+            </div>
+            <div id="editprojectadmins" style="display: none">
+              <div class="evenly search-bar">
+                <!-- buscar usuario -->
+                <label for="searchuser">
+                  <span class="material-symbols-outlined">search</span>
+                </label>
+                <input type="text" id="searchuser" placeholder="Search User.." style="width: 150px;"/>
+                <!-- invitar usuario -->
+                <button onclick="makeadmin()">
+                  <span class="material-symbols-outlined">add</span>Make Admin
+                </button>
+
+              </div>
+              <div >
+                <div class="member_circles separated_circles" style="  display: grid;
+                grid-template-columns: repeat(4, auto);
+                justify-content:space-between;
+                padding: 10px;
+                grid-row-gap: 20px;" 
+                id="members_circles">
+                 
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                  <div class="member_circle">
+                    <img
+                      src="https://www.w3schools.com/howto/img_avatar.png"
+                      alt=""
+                    />
+                    <span class="material-symbols-outlined">delete</span>
+                  </div>
+                </div>
+              
+            </div>
 
             <div id="editprofilename" style="display: none">
               <div class="form-group">

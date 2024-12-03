@@ -280,7 +280,7 @@ hr {
 .main-container {
     position: relative;
     grid-area: main;
-    overflow-y: hidden;
+    overflow-y: auto;
     padding: 20px 20px;
     color: rgba(255, 255, 255, 0.95);
 }
@@ -668,6 +668,24 @@ button:hover{
     object-fit: cover;
     border-radius: 50%;
     margin-left: -20px;
+}
+.member_circle{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+}
+.member_circle span{
+    font-size: 2rem;
+    color:red;
+    transition: all 0.3s;
+}
+.member_circle span:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+.separated_circles img{
+    margin-left: 0;
 }
 .extra-members {
     display: flex;
