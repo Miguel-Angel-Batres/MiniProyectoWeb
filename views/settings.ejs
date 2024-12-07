@@ -140,7 +140,6 @@
               <div class="setting">
                 <h2>Project Name</h2>
                 <div>
-                  <form action="/changeprojectname" method="POST">
                   <input type="text" id="project_name" />
                   <span
                     class="material-symbols-outlined edit-icon"
@@ -154,7 +153,6 @@
               <div class="setting">
                 <h2>Project Description</h2>
                 <div>
-                  <form action="/changeprojectdescription" method="POST">
                   <input type="text" id="project_description" />
                   <span
                     class="material-symbols-outlined edit-icon"
@@ -181,6 +179,7 @@
                     <span class="material-symbols-outlined">edit</span>
                   </label>
                   <form action="/changeprojectimage" method="POST">
+                  <input type="hidden" id="project-id" name="projectId" value="">
                   <input
                     type="file"
                     id="projectsettingsimagefile"
@@ -289,6 +288,7 @@
                     accept="image/*"
                     required
                     hidden
+                    onchange="cambiarimagenysubir()"
                   />
                 </div>
               </div>
@@ -299,22 +299,27 @@
         <div class="floating-settings" id="floating_settings">
           <div class="floating-content">
             <div id="editprojectname" style="display: none">
+              <form action="/changeprojectname" method="POST">
               <div class="form-group">
+                <input type="hidden" class="project-id" name="projectId" value="" >
                 <label for="oldname">Old Name</label>
-                <input type="text" id="oldprojectname" />
+                <input type="text" id="oldprojectname" disabled/>
                 <label for="newname">New Name</label>
-                <input type="text" id="newprojectname" />
+                <input type="text" id="newprojectname" name="newprojectname"/>
               </div>
               <div class="center-form">
-                <button onclick="editProjectName()">Save</button>
+                <button type="submit">Save</button>
               </div>
+            </form>
             </div>
             <div id="editprojectdescription" style="display: none">
+              <form action="/changeprojectdescription" method="POST">
               <div class="evenly column-form form-group">
+                <input type="hidden" class="project-id" name="projectId" value="">
                 <!-- old description -->
                 <label for="projectdescription">Old Project Description</label>
                 <textarea
-                  name="projectdescription"
+                  name="oldprojectdescription"
                   id="oldprojectdescription"
                   readonly
                 ></textarea>
@@ -326,8 +331,9 @@
                 ></textarea>
               </div>
               <div class="center-form">
-                <button onclick="editProjectDescription()">Save</button>
+                <button type="submit">Save</button>
               </div>
+              </form>
             </div>
 
             <div id="editprojectmembers" style="display: none">
@@ -336,20 +342,27 @@
                 <label for="searchuser">
                   <span class="material-symbols-outlined">search</span>
                 </label>
-                <input type="text" id="searchuser" placeholder="Search User.." style="width: 150px;"/>
+                <form action="/inviteuser" method="POST">
+                <input type="hidden" class="project-id" name="projectId" value="">
+                <input list="users" type="text" name="username" placeholder="Search User.." style="width: 150px;">
+                <datalist id="users">
+                  <% users.forEach(usuario => { %>
+                  <option value="<%= usuario.name %>">
+                  <% }); %>
+                </datalist>
                 <!-- invitar usuario -->
-                <button onclick="inviteUser()">
+                <button type="submit">
                   <span class="material-symbols-outlined">add</span>Invite
                 </button>
-
+               </form>
               </div>
-              <div >
+      
                 <div class="member_circles separated_circles" style="  display: grid;
                 grid-template-columns: repeat(4, auto);
                 justify-content:space-between;
                 padding: 10px;
                 grid-row-gap: 20px;" 
-                id="members_circles">
+                id="members_circles_edit">
                  
                   <div class="member_circle">
                     <img
@@ -372,48 +385,7 @@
                     />
                     <span class="material-symbols-outlined">delete</span>
                   </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
+   
                   
               </div>
             </div>
@@ -423,20 +395,30 @@
                 <label for="searchuser">
                   <span class="material-symbols-outlined">search</span>
                 </label>
-                <input type="text" id="searchuser" placeholder="Search User.." style="width: 150px;"/>
+                <form action="/makeadmin" method="POST">
+                <input type="hidden" class="project-id" name="projectId" value="">
+                <input list="usersmembers" type="text" id="searchuser" name="username" placeholder="Search User.." style="width: 150px;"/>
+                <% projects.forEach(project => { %>
+                  <!-- usuarios del proyecto -->
+                  <datalist id="usersmembers">
+                    <% project.assignedUsers.forEach(assignedUser => { %>
+                      <option value="<%= assignedUser.userId.name %>">
+                    <% }); %>
+                  </datalist>
+                <% }); %>
                 <!-- invitar usuario -->
-                <button onclick="makeadmin()">
+                <button type="submit">
                   <span class="material-symbols-outlined">add</span>Make Admin
                 </button>
-
+              </form>
               </div>
-              <div >
+
                 <div class="member_circles separated_circles" style="  display: grid;
                 grid-template-columns: repeat(4, auto);
                 justify-content:space-between;
                 padding: 10px;
                 grid-row-gap: 20px;" 
-                id="members_circles">
+                id="admin_circles_edit">
                  
                   <div class="member_circle">
                     <img
@@ -445,89 +427,38 @@
                     />
                     <span class="material-symbols-outlined">delete</span>
                   </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
+              
                 </div>
               
             </div>
 
             <div id="editprofilename" style="display: none">
+              <form action="/changeprofilename" method="POST">
               <div class="form-group">
                 <label for="oldname">Old Name</label>
-                <input type="text" id="oldname" />
+                <input type="text" id="oldname" disabled/>
                 <label for="newname">New Name</label>
-                <input type="text" id="newname" />
+                <input type="text" id="newname" name="newusername" />
               </div>
               <div class="center-form">
-                <button onclick="">Save</button>
+                <button type="submit">Save</button>
               </div>
+            </form>
             </div>
             <div id="editprofilepassword" style="display: none">
+              <form action="/changeprofilepassword" method="POST">
               <div class="form-group">
                 <label for="oldpassword">Old Password</label>
-                <input type="password" id="oldpassword" />
+                <input type="password" id="oldpassword" name="oldpassword"/>
                 <label for="newpassword">New Password</label>
-                <input type="password" id="newpassword" />
+                <input type="password" id="newpassword" name="newpassword"/>
                 <label for="confirmpassword">Confirm Password</label>
                 <input type="password" id="confirmpassword" />
               </div>
               <div class="center-form">
                 <button onclick="">Save</button>
               </div>
+            </form>
             </div>
           </div>
           <div class="closebutton">
@@ -577,7 +508,7 @@
           document.getElementById("editprofilename").style.display = "none";
           document.getElementById("editprofilepassword").style.display = "none";
         }
-
+        
         function activeprofilesettings() {
           document.querySelector(".project-settings").classList.add("inactive");
           document.querySelector(".profile-settings").classList.add("active");
@@ -590,9 +521,51 @@
             .querySelector(".profile-settings")
             .classList.remove("active");
         }
+        function cambiarimagenysubir() {
+          document.getElementById("profilesettingsimagefile")
+
+        }
         document.addEventListener("DOMContentLoaded", () => {
           const projectId = projectSelect.value;
+          const projectIds = document.querySelectorAll(".project-id");
+          projectIds.forEach((projectId) => {
+            projectId.value = projectSelect.value;
+          });
+          changevalues(projectId);
+          projectSelect.addEventListener("change", (event) => {
+            const projectId = event.target.value;
+            projectIds.forEach((projectId) => {
+            projectId.value = projectSelect.value;
+            });
+            changevalues(projectId);
+          });
+         
+          fetch(`/profile/settings`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch user data");
+              }
+              return response.json();
+            })
+            .then((user) => {
+              document.getElementById("profile_name").value = user.name || "";
+              document.getElementById("oldname").value = user.name || "";
+              document.getElementById("profile_password").value =
+                "examplepassword";
 
+              const profileImage = document.getElementById(
+                "profilesettingimage"
+              );
+              if (user.img) {
+                profileImage.src = user.img;
+                profileImage.alt = user.name;
+              } else {
+                profileImage.src = "";
+                profileImage.alt = "No image";
+              }
+            });
+        });
+        function changevalues(projectId) {
           fetch(`/projects/${projectId}`)
             .then((response) => {
               if (!response.ok) {
@@ -603,7 +576,11 @@
             .then((project) => {
               document.getElementById("project_name").value =
                 project.name || "";
+              document.getElementById("oldprojectname").value =
+                project.name || "";
               document.getElementById("project_description").value =
+                project.description || "";
+              document.getElementById("oldprojectdescription").value =
                 project.description || "";
 
               const projectImage = document.getElementById(
@@ -650,7 +627,112 @@
               } else {
                 memberCircles.innerHTML = "<p>No members assigned</p>";
               }
+              const editmembercircle = document.getElementById("members_circles_edit");
+              editmembercircle.innerHTML = "";
+              if (members.length > 0) {
+                members.forEach((assignedUser) => {
+                  const memberCircle = document.createElement("div");
+                  memberCircle.classList.add("member_circle");
+                  const imageUser = document.createElement("img");
+                  imageUser.src =
+                    assignedUser.userId.img ||
+                    "https://www.w3schools.com/howto/img_avatar.png"; 
+                  imageUser.alt = assignedUser.userId.name || "User";
+                  imageUser.title = assignedUser.userId.name;
+                  memberCircle.appendChild(imageUser);
+                  const deleteIcon = document.createElement("span");
+                  deleteIcon.classList.add("material-symbols-outlined");
+                  deleteIcon.textContent = "delete";
+                  deleteIcon.onclick = () => {
+                    fetch(`/projects/${projectId}/removeuser`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        userId: assignedUser.userId._id,
+                      }),
+                    })
+                      .then((response) => {
+                        if (!response.ok) {
+                          throw new Error(`Failed to remove user: ${response.statusText}`);
+                        }
+                        return response.text(); 
+                      })
+                      .then((data) => {
+                        console.log("Respuesta del servidor:", data);
+                        try {
+                          const jsonData = JSON.parse(data);
+                          console.log("JSON parseado correctamente:", jsonData);
+                          changevalues(projectId);
+                        } catch (err) {
+                          console.error("Error al parsear JSON:", err);
+                        }
+                      })
+                      .catch((error) => {
+                        console.error("Error removing user:", error);
+                      });
 
+                  };
+                  memberCircle.appendChild(deleteIcon);
+                  editmembercircle.appendChild(memberCircle);
+                });
+              } else {
+                editmembercircle.innerHTML = "<p>No members assigned</p>";
+              }
+              const editadmincircle = document.getElementById("admin_circles_edit");
+              editadmincircle.innerHTML = "";
+              if (admins.length > 0) {
+                admins.forEach((assignedUser) => {
+                  const adminCircle = document.createElement("div");
+                  adminCircle.classList.add("member_circle");
+                  const imageAdmin = document.createElement("img");
+                  imageAdmin.src =
+                    assignedUser.userId.img ||
+                    "https://www.w3schools.com/howto/img_avatar.png"; 
+                  imageAdmin.alt = assignedUser.userId.name || "Admin";
+                  imageAdmin.title = assignedUser.userId.name;
+                  adminCircle.appendChild(imageAdmin);
+                  const deleteIcon = document.createElement("span");
+                  deleteIcon.classList.add("material-symbols-outlined");
+                  deleteIcon.textContent = "delete";
+                  deleteIcon.onclick = () => {
+                    fetch(`/projects/${projectId}/removeadmin`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        userId: assignedUser.userId._id,
+                      }),
+                    })
+                      .then((response) => {
+                        if (!response.ok) {
+                          throw new Error(`Failed to remove admin: ${response.statusText}`);
+                        }
+                        return response.text(); 
+                      })
+                      .then((data) => {
+                        console.log("Respuesta del servidor:", data);
+                        try {
+                          const jsonData = JSON.parse(data);
+                          console.log("JSON parseado correctamente:", jsonData);
+                          changevalues(projectId);
+                        } catch (err) {
+                          console.error("Error al parsear JSON:", err);
+                        }
+                      })
+                      .catch((error) => {
+                        console.error("Error removing admin:", error);
+                      });
+
+                  };
+                  adminCircle.appendChild(deleteIcon);
+                  editadmincircle.appendChild(adminCircle);
+                });
+              } else {
+                editadmincircle.innerHTML = "<p>No admins assigned</p>";
+              }
               const adminCircles = document.getElementById("admin_circles");
               adminCircles.innerHTML = "";
               if (admins.length > 0) {
@@ -681,30 +763,8 @@
             .catch((error) => {
               console.error("Error fetching project data:", error);
             });
-          fetch(`/profile/settings`)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Failed to fetch user data");
-              }
-              return response.json();
-            })
-            .then((user) => {
-              document.getElementById("profile_name").value = user.name || "";
-              document.getElementById("profile_password").value =
-                "examplepassword";
-
-              const profileImage = document.getElementById(
-                "profilesettingimage"
-              );
-              if (user.img) {
-                profileImage.src = user.img;
-                profileImage.alt = user.name;
-              } else {
-                profileImage.src = "";
-                profileImage.alt = "No image";
-              }
-            });
-        });
+          
+        }
       </script>
     </div>
   </body>
