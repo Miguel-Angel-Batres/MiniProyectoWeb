@@ -246,7 +246,7 @@ function addmember(){
         const assignedUsers = selectedProject ? selectedProject.assignedUsers : [];
 
         const userOptions = assignedUsers
-            .map(user => `<option value="${user._id}">${user.name}</option>`)
+            .map(user => `<option value="${user.name}">${user.name}</option>`)
             .join('');
             
             newColumn.innerHTML = `
@@ -269,16 +269,16 @@ function addmember(){
     dynamicGrid.appendChild(newColumn);
     const deleteIcon = newColumn.querySelector('.delete-icon');
     deleteIcon.addEventListener('click', () => {
-    // Elimina la columna correspondiente
+    // elimina la columna correspondiente
     newColumn.remove();  
-    // Renumerar las columnas después de eliminar
+    // renumerar las columnas después de eliminar
     renumberColumns();  
     verifygrid();
   });
   }
 }
 
-// Función para renumerar las columnas
+// función para renumerar las columnas
 function renumberColumns() {
   const dynamicGrid = document.querySelector('.dynamic-grid');
   const columns = dynamicGrid.querySelectorAll('.column-form');

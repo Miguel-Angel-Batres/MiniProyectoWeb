@@ -72,13 +72,12 @@ app.get('/home', async (req, res) => {
             return res.redirect('/login');
         } else {
             const userId = req.session.userId; 
-            const [numprojects, numtasks, projects] = await Promise.all([
+            const [numprojects, numtasks] = await Promise.all([
                 Project.countDocuments({ creatorUserId: userId }),
                 Task.countDocuments({ assignedUsers: userId }),
-                Project.find({}, "assignedUsers").lean()
             ]);
-            const totalUsers = projects.reduce((sum, project) => sum + project.assignedUsers.length, 0);
-            return res.render('home', { numprojects, numtasks, totalUsers });
+            const userscount = await usermodel.countDocuments();
+            return res.render('home', { numprojects, numtasks, userscount });
         }
     } catch (error) {
         console.error(error);
@@ -207,11 +206,24 @@ app.post('/changeprojectdescription', async (req, res) => {
         res.status(500).send('Error al actualizar descripción de proyecto');
     }
 });
+app.post('/changeprofileimage'), upload.single('userimg'), async (req, res) => {
+    try {
+        const user = await usermodel.findById(req.session
+            .userId);
+        user.img = req.file ? `/uploads/${req.file.filename}` : null;
+        await user.save();
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al actualizar imagen de usuario');
+    }
+};
 app.post('/inviteuser', async (req, res) => {
     try {
-        const { projectId, username,} = req.body;
-        const project = await Project.findById(projectId);
+        const { projectId, username} = req.body;
+        const project = await Project.findById(projectId).populate('assignedUsers.userId');
         const userExists = project.assignedUsers.some(user => user.userId.name === username);
+
         if (userExists) {
             return res.send('Usuario ya asignado');
         }else{
@@ -263,12 +275,30 @@ app.post('/projects/:projectId/removeadmin', async (req, res) => {
         res.status(500).send('Error al eliminar admin');
     }
 });
+app.post('/deleteproject', async (req, res) => {
+    try {
+        const { projectId } = req.body;
+        await Project.findByIdAndDelete(projectId);
+        // eliminar tareas del proyecto
+        await Task.deleteMany({ projectId });
+
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al eliminar proyecto');
+    }
+});
 app.post('/projects/:projectId/removeuser', async (req, res) => {
     try {
         const { projectId } = req.params;
         const { userId } = req.body;
         const project = await Project.findById(projectId);
         project.assignedUsers = project.assignedUsers.filter(user => user.userId.toString() !== userId);
+        // eliminar usuario de las tareas
+        await Task.updateMany({ projectId, assignedUsers: userId }, { $pull: { assignedUsers: userId } });
+        // eliminar tareas sin usuarios
+        await Task.deleteMany({ projectId, assignedUsers: [] });
+
         await project.save();
         res.redirect('/settings');
     } catch (error) {
@@ -310,7 +340,21 @@ app.post('/changeprofilepassword', async (req, res) => {
         res.status(500).send('Error al actualizar contraseña');
     }
 });
-app.post('/changeprofileimg', upload.single('userimg'), async (req, res) => {
+
+app.post('/changeprojectimage', upload.single('projectimage'), async (req, res) => {
+    try {
+        const { projectId } = req.body;
+        const project = await
+        Project .findById(projectId);
+        project.image = req.file ? `/uploads/${req.file.filename}` : null;
+        await project.save();
+        res.redirect('/settings');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al actualizar imagen de proyecto');
+    }
+});
+app.post('/changeprofileimage', upload.single('profileimage'), async (req, res) => {
     try {
         const user = await usermodel.findById(req.session
             .userId);
@@ -322,7 +366,7 @@ app.post('/changeprofileimg', upload.single('userimg'), async (req, res) => {
         res.status(500).send('Error al actualizar imagen de usuario');
     }
 });
-        // encriptar nueva contraseña 
+     
 // metodos add
 app.post('/createproject', upload.single('projectimage'), async (req, res) => {
     try {
@@ -332,10 +376,12 @@ app.post('/createproject', upload.single('projectimage'), async (req, res) => {
         const userArray = Array.isArray(assignedUsers) ? assignedUsers : [assignedUsers];
         const startDateformatted = new Date(startdate.split('T')[0]);
         const endDateformatted = new Date(enddate.split('T')[0]);
-
+        const userArrayIds = await usermodel.find({ name: { $in: userArray } }, '_id');
+        // eliminar usuarios duplicados
+        const uniqueUserArrayIds = userArrayIds.filter((user, index, self) => index === self.findIndex(t => t.name === user.name));
         const assignedUsersWithRoles = [
            
-            ...userArray.map(userId => ({ //asignar primero los miembros
+            ...uniqueUserArrayIds.map(userId => ({ //asignar primero los miembros
                 userId,
                 role: 'miembro' 
             })),
@@ -371,6 +417,9 @@ app.post('/createtask', async (req, res) => {
         const { taskname, priority, taskdescription, taskdate, projectId } = req.body;
         const assignedUsers = req.body.search_usuarios;
         const userArray = Array.isArray(assignedUsers) ? assignedUsers : [assignedUsers];
+        const userArrayIds = await usermodel.find({ name: { $in: userArray } }, '_id');
+        // eliminar usuarios duplicados
+        const uniqueUserArrayIds = userArrayIds.filter((user, index, self) => index === self.findIndex(t => t.name === user.name));
         const newTask = new Task({
             name: taskname,
             description: taskdescription,
@@ -378,7 +427,7 @@ app.post('/createtask', async (req, res) => {
             status: 'not started',
             priority: priority,
             projectId: projectId,
-            assignedUsers: userArray,
+            assignedUsers: uniqueUserArrayIds,
         });
 
         await newTask.save();
@@ -468,7 +517,7 @@ app.get('/settings', async (req, res) => {
     try {
         
         const user = await usermodel.findById(req.session.userId);
-        const users = await usermodel.find({},'_id name ');
+        const users = await usermodel.find({}, 'name');
         // mandar proyectos 
         const projects = await Project.find({ creatorUserId: req.session.userId }, 
             'name description startDate endDate createdAt creatorUserid assignedUsers image')
@@ -477,6 +526,7 @@ app.get('/settings', async (req, res) => {
                 select: 'name', 
               })
               .exec();
+        
 
         if (!req.session.userId) {
             return res.redirect('/login');
@@ -488,5 +538,21 @@ app.get('/settings', async (req, res) => {
         res.status(500).send('Error al obtener usuario');
     }
 });
+app.get('/settings/:projectId', async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        
+        const project = await Project.findById(projectId).populate('assignedUsers.userId');
+        if (!project) {
+        return res.status(404).json({ error: 'Proyecto no encontrado' });
+        }
 
+        const assignedUserIds = project.assignedUsers.map(user => user.userId._id.toString());
+        const users = await usermodel.find({ _id: { $nin: assignedUserIds } });
+        res.json({ users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener proyecto');
+    }
+});
 

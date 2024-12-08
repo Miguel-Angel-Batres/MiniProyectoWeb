@@ -53,16 +53,7 @@
               <p>No new notifications</p>
             </div>
           </div>
-          <div class="dropdown">
-            <span
-              class="material-symbols-outlined"
-              onclick="toggleDropdown('email-dropdown')"
-              >email</span
-            >
-            <div class="dropdown-menu" id="email-dropdown">
-              <p>No new emails</p>
-            </div>
-          </div>
+        
           <div class="dropdown">
             <span
               class="material-symbols-outlined"
@@ -105,12 +96,6 @@
               Projects
             </a>
           </li>
-
-          <li class="sidebar-list-item">
-            <a href="#">
-              <span class="material-symbols-outlined">report</span> Reports
-            </a>
-          </li>
           <li class="sidebar-list-item">
             <a href="/settings">
               <span class="material-symbols-outlined">settings</span> Settings
@@ -120,7 +105,7 @@
       </aside>
       <!-- Sidebar End -->
       <!-- Main -->
-      <main class="main-container" style="overflow-y: hidden;">
+      <main class="main-container" style="overflow-y: hidden">
         <div class="project-settings">
           <div class="main-title" style="padding-right: 20px">
             <div style="width: 120px"></div>
@@ -146,7 +131,6 @@
                     onclick="activeprojectnameedit()"
                     >edit</span
                   >
-                </form>
                 </div>
               </div>
               <hr />
@@ -159,7 +143,6 @@
                     onclick="activeprojectdescriptionedit()"
                     >edit</span
                   >
-                </form>
                 </div>
               </div>
               <hr />
@@ -178,17 +161,27 @@
                   >
                     <span class="material-symbols-outlined">edit</span>
                   </label>
-                  <form action="/changeprojectimage" method="POST">
-                  <input type="hidden" id="project-id" name="projectId" value="">
-                  <input
-                    type="file"
-                    id="projectsettingsimagefile"
-                    name="projectimage"
-                    accept="image/*"
-                    required
-                    hidden
-                  />
-                 </form>
+                  <form
+                    action="/changeprojectimage"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
+                    <input
+                      type="hidden"
+                      class="project-id"
+                      name="projectId"
+                      value=""
+                    />
+                    <input
+                      type="file"
+                      id="projectsettingsimagefile"
+                      name="projectimage"
+                      accept="image/*"
+                      required
+                      hidden
+                      onchange="this.form.submit()"
+                    />
+                  </form>
                 </div>
               </div>
             </div>
@@ -206,9 +199,11 @@
                       alt=""
                     />
                   </div>
-                  <span class="material-symbols-outlined edit-icon"
+                  <span
+                    class="material-symbols-outlined edit-icon"
                     onclick="activeprojectmembersedit()"
-                    >edit</span>
+                    >edit</span
+                  >
                 </div>
               </div>
               <hr />
@@ -225,9 +220,18 @@
                       alt=""
                     />
                   </div>
-                  <span class="material-symbols-outlined edit-icon"
+                  <span
+                    class="material-symbols-outlined edit-icon"
                     onclick="activeprojectadminsedit()"
-                  >edit</span>
+                    >edit</span
+                  >
+                </div>
+              </div>
+              <hr />
+              <div class="setting">
+                <h2>Delete Project</h2>
+                <div class="center-form">
+                  <button onclick="activeprojectdelete()">Delete</button>
                 </div>
               </div>
 
@@ -281,15 +285,22 @@
                   >
                     <span class="material-symbols-outlined">edit</span>
                   </label>
-                  <input
-                    type="file"
-                    id="profilesettingsimagefile"
-                    name="profileimage"
-                    accept="image/*"
-                    required
-                    hidden
-                    onchange="cambiarimagenysubir()"
-                  />
+
+                  <form
+                    action="/changeprofileimage"
+                    method="POST"
+                    enctype="multipart/form-data"
+                  >
+                    <input
+                      type="file"
+                      id="profilesettingsimagefile"
+                      name="profileimage"
+                      accept="image/*"
+                      required
+                      hidden
+                      onchange="this.form.submit()"
+                    />
+                  </form>
                 </div>
               </div>
             </div>
@@ -300,39 +311,57 @@
           <div class="floating-content">
             <div id="editprojectname" style="display: none">
               <form action="/changeprojectname" method="POST">
-              <div class="form-group">
-                <input type="hidden" class="project-id" name="projectId" value="" >
-                <label for="oldname">Old Name</label>
-                <input type="text" id="oldprojectname" disabled/>
-                <label for="newname">New Name</label>
-                <input type="text" id="newprojectname" name="newprojectname"/>
-              </div>
-              <div class="center-form">
-                <button type="submit">Save</button>
-              </div>
-            </form>
+                <div class="form-group">
+                  <input
+                    type="hidden"
+                    class="project-id"
+                    name="projectId"
+                    value=""
+                  />
+                  <label for="oldname">Old Name</label>
+                  <input type="text" id="oldprojectname" disabled />
+                  <label for="newname">New Name</label>
+                  <input
+                    type="text"
+                    id="newprojectname"
+                    name="newprojectname"
+                  />
+                </div>
+                <div class="center-form">
+                  <button type="submit">Save</button>
+                </div>
+              </form>
             </div>
             <div id="editprojectdescription" style="display: none">
               <form action="/changeprojectdescription" method="POST">
-              <div class="evenly column-form form-group">
-                <input type="hidden" class="project-id" name="projectId" value="">
-                <!-- old description -->
-                <label for="projectdescription">Old Project Description</label>
-                <textarea
-                  name="oldprojectdescription"
-                  id="oldprojectdescription"
-                  readonly
-                ></textarea>
-                <!-- new description -->
-                <label for="projectdescription">New Project Description</label>
-                <textarea
-                  name="projectdescription"
-                  id="newprojectdescription"
-                ></textarea>
-              </div>
-              <div class="center-form">
-                <button type="submit">Save</button>
-              </div>
+                <div class="evenly column-form form-group">
+                  <input
+                    type="hidden"
+                    class="project-id"
+                    name="projectId"
+                    value=""
+                  />
+                  <!-- old description -->
+                  <label for="projectdescription"
+                    >Old Project Description</label
+                  >
+                  <textarea
+                    name="oldprojectdescription"
+                    id="oldprojectdescription"
+                    readonly
+                  ></textarea>
+                  <!-- new description -->
+                  <label for="projectdescription"
+                    >New Project Description</label
+                  >
+                  <textarea
+                    name="projectdescription"
+                    id="newprojectdescription"
+                  ></textarea>
+                </div>
+                <div class="center-form">
+                  <button type="submit">Save</button>
+                </div>
               </form>
             </div>
 
@@ -343,50 +372,59 @@
                   <span class="material-symbols-outlined">search</span>
                 </label>
                 <form action="/inviteuser" method="POST">
-                <input type="hidden" class="project-id" name="projectId" value="">
-                <input list="users" type="text" name="username" placeholder="Search User.." style="width: 150px;">
-                <datalist id="users">
-                  <% users.forEach(usuario => { %>
-                  <option value="<%= usuario.name %>">
-                  <% }); %>
-                </datalist>
-                <!-- invitar usuario -->
-                <button type="submit">
-                  <span class="material-symbols-outlined">add</span>Invite
-                </button>
-               </form>
+                  <input
+                    type="hidden"
+                    class="project-id"
+                    name="projectId"
+                    value=""
+                  />
+                  <input
+                    list="users"
+                    type="text"
+                    name="username"
+                    placeholder="Search User.."
+                    style="width: 150px"
+                  />
+                  <datalist id="users"> </datalist>
+                  <!-- invitar usuario -->
+                  <button type="submit">
+                    <span class="material-symbols-outlined">add</span>Invite
+                  </button>
+                </form>
               </div>
-      
-                <div class="member_circles separated_circles" style="  display: grid;
-                grid-template-columns: repeat(4, auto);
-                justify-content:space-between;
-                padding: 10px;
-                grid-row-gap: 20px;" 
-                id="members_circles_edit">
-                 
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-   
-                  
+
+              <div
+                class="member_circles separated_circles"
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, auto);
+                  justify-content: space-between;
+                  padding: 10px;
+                  grid-row-gap: 20px;
+                "
+                id="members_circles_edit"
+              >
+                <div class="member_circle">
+                  <img
+                    src="https://www.w3schools.com/howto/img_avatar.png"
+                    alt=""
+                  />
+                  <span class="material-symbols-outlined">delete</span>
+                </div>
+                <div class="member_circle">
+                  <img
+                    src="https://www.w3schools.com/howto/img_avatar.png"
+                    alt=""
+                  />
+                  <span class="material-symbols-outlined">delete</span>
+                </div>
+                <div class="member_circle">
+                  <img
+                    src="https://www.w3schools.com/howto/img_avatar.png"
+                    alt=""
+                  />
+                  <span class="material-symbols-outlined">delete</span>
+                </div>
               </div>
             </div>
             <div id="editprojectadmins" style="display: none">
@@ -396,71 +434,106 @@
                   <span class="material-symbols-outlined">search</span>
                 </label>
                 <form action="/makeadmin" method="POST">
-                <input type="hidden" class="project-id" name="projectId" value="">
-                <input list="usersmembers" type="text" id="searchuser" name="username" placeholder="Search User.." style="width: 150px;"/>
-                <% projects.forEach(project => { %>
+                  <input
+                    type="hidden"
+                    class="project-id"
+                    name="projectId"
+                    value=""
+                  />
+                  <input
+                    list="usersmembers"
+                    type="text"
+                    id="searchuser"
+                    name="username"
+                    placeholder="Search User.."
+                    style="width: 150px"
+                  />
+                  <% projects.forEach(project => { %>
                   <!-- usuarios del proyecto -->
                   <datalist id="usersmembers">
-                    <% project.assignedUsers.forEach(assignedUser => { %>
-                      <option value="<%= assignedUser.userId.name %>">
-                    <% }); %>
+                    <!-- filtrar por rol miembro -->
+                    <% project.assignedUsers.forEach(user => { %> <%
+                    if(user.role === "miembro") { %>
+                    <option value="<%= user.userId.name %>">
+                      <% } %> <% }); %>
+                    </option>
                   </datalist>
-                <% }); %>
-                <!-- invitar usuario -->
-                <button type="submit">
-                  <span class="material-symbols-outlined">add</span>Make Admin
-                </button>
-              </form>
+
+                  <% }); %>
+                  <!-- invitar usuario -->
+                  <button type="submit">
+                    <span class="material-symbols-outlined">add</span>Make Admin
+                  </button>
+                </form>
               </div>
 
-                <div class="member_circles separated_circles" style="  display: grid;
-                grid-template-columns: repeat(4, auto);
-                justify-content:space-between;
-                padding: 10px;
-                grid-row-gap: 20px;" 
-                id="admin_circles_edit">
-                 
-                  <div class="member_circle">
-                    <img
-                      src="https://www.w3schools.com/howto/img_avatar.png"
-                      alt=""
-                    />
-                    <span class="material-symbols-outlined">delete</span>
-                  </div>
-              
+              <div
+                class="member_circles separated_circles"
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, auto);
+                  justify-content: space-between;
+                  padding: 10px;
+                  grid-row-gap: 20px;
+                "
+                id="admin_circles_edit"
+              >
+                <div class="member_circle">
+                  <img
+                    src="https://www.w3schools.com/howto/img_avatar.png"
+                    alt=""
+                  />
+                  <span class="material-symbols-outlined">delete</span>
                 </div>
-              
+              </div>
             </div>
 
             <div id="editprofilename" style="display: none">
               <form action="/changeprofilename" method="POST">
-              <div class="form-group">
-                <label for="oldname">Old Name</label>
-                <input type="text" id="oldname" disabled/>
-                <label for="newname">New Name</label>
-                <input type="text" id="newname" name="newusername" />
-              </div>
-              <div class="center-form">
-                <button type="submit">Save</button>
-              </div>
-            </form>
+                <div class="form-group">
+                  <label for="oldname">Old Name</label>
+                  <input type="text" id="oldname" disabled />
+                  <label for="newname">New Name</label>
+                  <input type="text" id="newname" name="newusername" />
+                </div>
+                <div class="center-form">
+                  <button type="submit">Save</button>
+                </div>
+              </form>
             </div>
             <div id="editprofilepassword" style="display: none">
               <form action="/changeprofilepassword" method="POST">
-              <div class="form-group">
-                <label for="oldpassword">Old Password</label>
-                <input type="password" id="oldpassword" name="oldpassword"/>
-                <label for="newpassword">New Password</label>
-                <input type="password" id="newpassword" name="newpassword"/>
-                <label for="confirmpassword">Confirm Password</label>
-                <input type="password" id="confirmpassword" />
-              </div>
-              <div class="center-form">
-                <button onclick="">Save</button>
-              </div>
-            </form>
+                <div class="form-group">
+                  <label for="oldpassword">Old Password</label>
+                  <input type="password" id="oldpassword" name="oldpassword" />
+                  <label for="newpassword">New Password</label>
+                  <input type="password" id="newpassword" name="newpassword" />
+                  <label for="confirmpassword">Confirm Password</label>
+                  <input type="password" id="confirmpassword" />
+                </div>
+                <div class="center-form">
+                  <button onclick="">Save</button>
+                </div>
+              </form>
+            </div>
+            <div id="editdeleteproject" style="display: none;">
+              <form action="/deleteproject" method="POST">
+                <input
+                  type="hidden"
+                  class="project-id"
+                  name="projectId"
+                  value="">
+                <div class="evenly">
+                  <h2>Are you sure that you want to delete this project?</h2>
+                </div>
+                <div class="center-form">
+                  <button type="submit">Yes</button>
+                  <button onclick="closeFloating()" type="reset">No</button>
+                </div>
+              </form>
             </div>
           </div>
+
           <div class="closebutton">
             <span class="material-symbols-outlined" onclick="closeFloating()"
               >close</span
@@ -471,7 +544,10 @@
       <!-- Main End -->
       <script>
         const projectSelect = document.getElementById("project-select");
-        
+        function activeprojectdelete() {
+          document.getElementById("floating_settings").style.display = "flex";
+          document.getElementById("editdeleteproject").style.display = "block";
+        }
         function activeprojectnameedit() {
           document.getElementById("floating_settings").style.display = "flex";
           document.getElementById("editprojectname").style.display = "block";
@@ -507,8 +583,9 @@
           document.getElementById("editprojectadmins").style.display = "none";
           document.getElementById("editprofilename").style.display = "none";
           document.getElementById("editprofilepassword").style.display = "none";
+          document.getElementById("editdeleteproject").style.display = "none";
         }
-        
+
         function activeprofilesettings() {
           document.querySelector(".project-settings").classList.add("inactive");
           document.querySelector(".profile-settings").classList.add("active");
@@ -522,8 +599,7 @@
             .classList.remove("active");
         }
         function cambiarimagenysubir() {
-          document.getElementById("profilesettingsimagefile")
-
+          document.getElementById("profilesettingsimagefile");
         }
         document.addEventListener("DOMContentLoaded", () => {
           const projectId = projectSelect.value;
@@ -535,11 +611,11 @@
           projectSelect.addEventListener("change", (event) => {
             const projectId = event.target.value;
             projectIds.forEach((projectId) => {
-            projectId.value = projectSelect.value;
+              projectId.value = projectSelect.value;
             });
             changevalues(projectId);
           });
-         
+
           fetch(`/profile/settings`)
             .then((response) => {
               if (!response.ok) {
@@ -566,6 +642,24 @@
             });
         });
         function changevalues(projectId) {
+          fetch(`/settings/${projectId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch project data");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Usuarios:", data.users);
+              const usersmembers = document.getElementById("users");
+              usersmembers.innerHTML = "";
+              data.users.forEach((user) => {
+                const option = document.createElement("option");
+                option.value = user.name;
+                usersmembers.appendChild(option);
+              });
+            });
+
           fetch(`/projects/${projectId}`)
             .then((response) => {
               if (!response.ok) {
@@ -594,9 +688,7 @@
                 projectImage.alt = "No image";
               }
 
-              const members = project.assignedUsers.filter(
-                (user) => user.role === "miembro"
-              );
+              const members = project.assignedUsers;
               const admins = project.assignedUsers.filter(
                 (user) => user.role === "admin"
               );
@@ -610,7 +702,7 @@
                   const imageUser = document.createElement("img");
                   imageUser.src =
                     assignedUser.userId.img ||
-                    "https://www.w3schools.com/howto/img_avatar.png"; // Imagen del usuario
+                    "https://www.w3schools.com/howto/img_avatar.png";
                   imageUser.alt = assignedUser.userId.name || "User";
                   imageUser.title = assignedUser.userId.name;
                   memberCircles.appendChild(imageUser);
@@ -627,7 +719,9 @@
               } else {
                 memberCircles.innerHTML = "<p>No members assigned</p>";
               }
-              const editmembercircle = document.getElementById("members_circles_edit");
+              const editmembercircle = document.getElementById(
+                "members_circles_edit"
+              );
               editmembercircle.innerHTML = "";
               if (members.length > 0) {
                 members.forEach((assignedUser) => {
@@ -636,7 +730,7 @@
                   const imageUser = document.createElement("img");
                   imageUser.src =
                     assignedUser.userId.img ||
-                    "https://www.w3schools.com/howto/img_avatar.png"; 
+                    "https://www.w3schools.com/howto/img_avatar.png";
                   imageUser.alt = assignedUser.userId.name || "User";
                   imageUser.title = assignedUser.userId.name;
                   memberCircle.appendChild(imageUser);
@@ -655,9 +749,11 @@
                     })
                       .then((response) => {
                         if (!response.ok) {
-                          throw new Error(`Failed to remove user: ${response.statusText}`);
+                          throw new Error(
+                            `Failed to remove user: ${response.statusText}`
+                          );
                         }
-                        return response.text(); 
+                        return response.text();
                       })
                       .then((data) => {
                         console.log("Respuesta del servidor:", data);
@@ -672,7 +768,6 @@
                       .catch((error) => {
                         console.error("Error removing user:", error);
                       });
-
                   };
                   memberCircle.appendChild(deleteIcon);
                   editmembercircle.appendChild(memberCircle);
@@ -680,7 +775,8 @@
               } else {
                 editmembercircle.innerHTML = "<p>No members assigned</p>";
               }
-              const editadmincircle = document.getElementById("admin_circles_edit");
+              const editadmincircle =
+                document.getElementById("admin_circles_edit");
               editadmincircle.innerHTML = "";
               if (admins.length > 0) {
                 admins.forEach((assignedUser) => {
@@ -689,7 +785,7 @@
                   const imageAdmin = document.createElement("img");
                   imageAdmin.src =
                     assignedUser.userId.img ||
-                    "https://www.w3schools.com/howto/img_avatar.png"; 
+                    "https://www.w3schools.com/howto/img_avatar.png";
                   imageAdmin.alt = assignedUser.userId.name || "Admin";
                   imageAdmin.title = assignedUser.userId.name;
                   adminCircle.appendChild(imageAdmin);
@@ -708,9 +804,11 @@
                     })
                       .then((response) => {
                         if (!response.ok) {
-                          throw new Error(`Failed to remove admin: ${response.statusText}`);
+                          throw new Error(
+                            `Failed to remove admin: ${response.statusText}`
+                          );
                         }
-                        return response.text(); 
+                        return response.text();
                       })
                       .then((data) => {
                         console.log("Respuesta del servidor:", data);
@@ -725,7 +823,6 @@
                       .catch((error) => {
                         console.error("Error removing admin:", error);
                       });
-
                   };
                   adminCircle.appendChild(deleteIcon);
                   editadmincircle.appendChild(adminCircle);
@@ -742,7 +839,7 @@
                   const imageAdmin = document.createElement("img");
                   imageAdmin.src =
                     assignedUser.userId.img ||
-                    "https://www.w3schools.com/howto/img_avatar.png"; // Imagen del usuario
+                    "https://www.w3schools.com/howto/img_avatar.png";
                   imageAdmin.alt = assignedUser.userId.name || "Admin";
                   imageAdmin.title = assignedUser.userId.name;
                   adminCircles.appendChild(imageAdmin);
@@ -763,7 +860,6 @@
             .catch((error) => {
               console.error("Error fetching project data:", error);
             });
-          
         }
       </script>
     </div>

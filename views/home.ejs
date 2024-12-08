@@ -53,16 +53,7 @@
               <p>No new notifications</p>
             </div>
           </div>
-          <div class="dropdown">
-            <span
-              class="material-symbols-outlined"
-              onclick="toggleDropdown('email-dropdown')"
-              >email</span
-            >
-            <div class="dropdown-menu" id="email-dropdown">
-              <p>No new emails</p>
-            </div>
-          </div>
+
           <div class="dropdown">
             <span
               class="material-symbols-outlined"
@@ -106,11 +97,6 @@
             </a>
           </li>
           <li class="sidebar-list-item">
-            <a href="#">
-              <span class="material-symbols-outlined">report</span> Reports
-            </a>
-          </li>
-          <li class="sidebar-list-item">
             <a href="/settings">
               <span class="material-symbols-outlined">settings</span> Settings
             </a>
@@ -140,18 +126,12 @@
           </div>
           <div class="card">
             <div class="card-inner">
-              <h3>TEAMS</h3>
+              <h3>USERS</h3>
               <span class="material-symbols-outlined">groups</span>
             </div>
-            <h1><%= totalUsers %></h1>
+            <h1><%= userscount %></h1>
           </div>
-          <div class="card">
-            <div class="card-inner">
-              <h3>REPORTS</h3>
-              <span class="material-symbols-outlined">report</span>
-            </div>
-            <h1>25</h1>
-          </div>
+        
         </div>
 
         <div class="main-tasks">
