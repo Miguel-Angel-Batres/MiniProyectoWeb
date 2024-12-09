@@ -104,6 +104,11 @@ hr {
     font-size: 1.2rem;
    
 }
+.task-item{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 .center-form{
     display: flex;
     flex-direction: row;
@@ -215,11 +220,16 @@ hr {
   .dropdown-menu p:hover {
     background-color: #3D4450;
   }
+  .task-item p{
+    cursor: default;
+  }
+  .task-item p:hover{
+    background-color: inherit;
+  }
   .dropdown-menu a {
     color: inherit;
     text-decoration: none;
   }
-  /* Mostrar el menú cuando está activo */
   .dropdown-menu.active {
     display: block;
   }

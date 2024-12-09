@@ -329,6 +329,26 @@ function fetchtasks(projectId, filter) {
             return response.json();
         })
         .then(tasks => {
+            const notificador = document.getElementById("notifications-dropdown");
+              var contador = 0;
+              tasks.forEach((task) => {
+                
+                notificador.innerHTML = '';
+                if(task.status==="not started" || task.status==="incompleted"){
+                const taskItem = document.createElement("div");
+                taskItem.className = "task-item";
+                const formattedDate = new Date(task.enddate);
+                taskItem.innerHTML = `
+                  <p><strong>${task.name}</strong></p>
+                  <p>${formattedDate}</p>
+                `;
+                notificador.appendChild(taskItem);
+                }
+                contador+=1;
+              });
+              if(contador==0){
+                notificador.innerHTML = ` <p>No new notifications</p>`;
+              }
             if (filter === "completed") {
                 tasks = tasks.filter((task) => task.status === "completed");
             } else if (filter === "incompleted") {

@@ -49,7 +49,7 @@
               onclick="toggleDropdown('notifications-dropdown')"
               >notifications</span
             >
-            <div class="dropdown-menu" id="notifications-dropdown">
+            <div class="dropdown-menu" style="width: 300px;" id="notifications-dropdown">
               <p>No new notifications</p>
             </div>
           </div>
@@ -183,6 +183,28 @@
               return res.json();
             })
             .then((tasks) => {
+              // notificar tareas 
+              const notificador = document.getElementById("notifications-dropdown");
+              var contador = 0;
+              tasks.forEach((task) => {
+                
+                notificador.innerHTML = '';
+                if(task.status==="not started" || task.status==="incompleted"){
+                const taskItem = document.createElement("div");
+                taskItem.className = "task-item"     
+                const formattedDate = new Date(task.enddate);
+                taskItem.innerHTML = `
+                  <p><strong>${task.name}</strong></p>
+                  <p>${formattedDate}</p>
+                `;
+                notificador.appendChild(taskItem);
+                }
+                contador+=1;
+              });
+              if(contador==0){
+                notificador.innerHTML = ` <p>No new notifications</p>`;
+              }
+
               if (filteroption === "completed") {
                 tasks = tasks.filter((task) => task.status === "completed");
               } else if (filteroption === "incompleted") {
@@ -247,7 +269,7 @@
                   if (task.status === "completed") {
                     taskDiv.querySelector(".task").classList.add("green");
                   }
-                  if (task.status === "in progress") {
+                  if (task.status === "incompleted") {
                     taskDiv.querySelector(".task").classList.add("orange");
                   }
                   if (task.status === "not started") {

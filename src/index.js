@@ -277,11 +277,22 @@ app.post('/projects/:projectId/removeadmin', async (req, res) => {
         const { projectId } = req.params;
         const { userId } = req.body;
         const project = await Project.findById(projectId);
+        
+        const usersessionrole = project.assignedUsers.find(user => user.userId.toString() === req.session.userId);
+        console.log(usersessionrole);
+        if(usersessionrole.role !== 'admin'){
+             return res.json({ success: false, message: "No tienes permisos para eliminar admin" });
+        }
+        if (project.creatorUserId.toString() === userId) {
+            return res.json({ success: false, message: "Cannot remove the project's creator" });
+        }
         const user = project.assignedUsers.find(user => user.userId.toString() === userId);
         user.role = 'miembro';
         await project.save();
-        res.redirect('/settings');
-    } catch (error) {
+        return res.json({ success: true, message: 'Admin eliminado correctamente' });
+
+
+        } catch (error) {
         console.error(error);
         res.status(500).send('Error al eliminar admin');
     }
@@ -539,7 +550,7 @@ app.get('/settings', async (req, res) => {
         const user = await usermodel.findById(req.session.userId);
         const users = await usermodel.find({}, 'name');
         // mandar proyectos 
-        const projects = await Project.find({ creatorUserId: req.session.userId }, 
+        const projects = await Project.find({ assignedUsers: { $elemMatch: { userId: req.session.userId } } }, 
             'name description startDate endDate createdAt creatorUserid assignedUsers image')
             .populate({
                 path: 'assignedUsers.userId', 
