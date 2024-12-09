@@ -53,6 +53,17 @@ app.get('/projects/:id', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+app.get('/profile', async (req, res) => {
+    try {
+     
+      res.json({ success: true, redirectUrl: '/settings?profile=true' }); 
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error en la obtención de perfil' });
+    }
+  });
+  
 app.get('/profile/settings', async (req, res) => {
     try {
       const userId = req.session.userId;
@@ -140,21 +151,21 @@ app.post('/login', async (req, res) => {
             name: req.body.username
         });
         if (!check) {
-            return res.send('Usuario no encontrado');
+            return res.json({ success: false, message: 'Usuario no encontrado' });
         }
         const IsPasswordCorrect = await crypt.compare(req.body.password, check.password);
         if (!IsPasswordCorrect) {
-            return res.send('Contraseña incorrecta');
+            return res.json({ success: false, message: 'Contraseña incorrecta' });
         }
         req.session.userId = check._id;
+        res.json({ success: true, message: 'Inicio de sesión correcto' });
 
-
-        return res.redirect('/home');
     } catch (error) {
         console.error(error);
         res.send('Error al iniciar sesión');
     }
 });
+
 // metodos update
 app.get('/update/start/:taskId', async (req, res) => {
     try {
@@ -293,19 +304,28 @@ app.post('/projects/:projectId/removeuser', async (req, res) => {
         const { projectId } = req.params;
         const { userId } = req.body;
         const project = await Project.findById(projectId);
-        project.assignedUsers = project.assignedUsers.filter(user => user.userId.toString() !== userId);
-        // eliminar usuario de las tareas
-        await Task.updateMany({ projectId, assignedUsers: userId }, { $pull: { assignedUsers: userId } });
-        // eliminar tareas sin usuarios
-        await Task.deleteMany({ projectId, assignedUsers: [] });
+        
+        if (project.creatorUserId.toString() === userId) {
+            return res.json({ success: false, message: "Cannot remove the project's creator" });
+        }
 
+        project.assignedUsers = project.assignedUsers.filter(user => user.userId.toString() !== userId);
+        await Task.updateMany({ projectId, assignedUsers: userId }, { $pull: { assignedUsers: userId } });
+
+        await Task.deleteMany({ projectId, assignedUsers: [] });
         await project.save();
-        res.redirect('/settings');
+
+        
+        return res.json({ success: true, message: 'User removed successfully' });
+
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error al eliminar usuario');
+        res.status(500).send('Error at user delete');
     }
 });
+
+
+
 app.post('/changeprofilename', async (req, res) => {
     try {
         const { newusername } = req.body;
@@ -556,3 +576,4 @@ app.get('/settings/:projectId', async (req, res) => {
     }
 });
 
+ 

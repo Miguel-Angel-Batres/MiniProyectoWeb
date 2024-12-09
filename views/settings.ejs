@@ -11,7 +11,7 @@
       as="style"
       onload="this.onload=null;this.rel='stylesheet'"
     />
-    <link rel="icon" href="data:;base64,=" />
+    <link rel="icon" href="uploads/portapapeles.png" type="image/png">
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -61,7 +61,7 @@
               >account_circle</span
             >
             <div class="dropdown-menu" id="account-dropdown">
-              <p><a href="/profile">View Profile</a></p>
+              <button  id=profileButton>Profile</button>
               <p><a href="/logout">Logout</a></p>
             </div>
           </div>
@@ -543,6 +543,16 @@
       </main>
       <!-- Main End -->
       <script>
+          // Verifica si hay un parámetro 'profile=true' en la URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const isProfile = urlParams.get('profile') === 'true';
+
+          // Si es true, activa la configuración del perfil
+          if (isProfile) {
+            window.addEventListener('load', function () {
+              activeprofilesettings();
+            });
+          }
         const projectSelect = document.getElementById("project-select");
         function activeprojectdelete() {
           document.getElementById("floating_settings").style.display = "flex";
@@ -747,26 +757,20 @@
                         userId: assignedUser.userId._id,
                       }),
                     })
-                      .then((response) => {
-                        if (!response.ok) {
-                          throw new Error(
-                            `Failed to remove user: ${response.statusText}`
-                          );
-                        }
-                        return response.text();
+                    .then(response => response.json())
+                      .then(data => {
+                          if (data.success) {  
+                              alert(data.message);
+                              location.reload(); 
+                          } else {
+                              alert(data.message);
+                               
+                          }
                       })
-                      .then((data) => {
-                        console.log("Respuesta del servidor:", data);
-                        try {
-                          const jsonData = JSON.parse(data);
-                          console.log("JSON parseado correctamente:", jsonData);
-                          changevalues(projectId);
-                        } catch (err) {
-                          console.error("Error al parsear JSON:", err);
-                        }
-                      })
-                      .catch((error) => {
-                        console.error("Error removing user:", error);
+
+                      
+                      .catch(error => {
+                          console.error('Error at user delete', error);
                       });
                   };
                   memberCircle.appendChild(deleteIcon);

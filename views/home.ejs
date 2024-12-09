@@ -11,7 +11,7 @@
       as="style"
       onload="this.onload=null;this.rel='stylesheet'"
     />
-    <link rel="icon" href="data:;base64,=" />
+    <link rel="icon" href="uploads/portapapeles.png" type="image/png">
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -61,7 +61,7 @@
               >account_circle</span
             >
             <div class="dropdown-menu" id="account-dropdown">
-              <a href="/profile"><p>Profile</p></a>
+              <button  id=profileButton>Profile</button>
               <a href="/logout"><p>Logout</p></a>
             </div>
           </div>
@@ -278,8 +278,9 @@
           toggleFilter(document.getElementById("startfilter"), "blue");
           fetchtasks("alltasks");
         });
+
       </script>
       <!-- Main End -->
     </div>
   </body>
-</html>
+</html> 

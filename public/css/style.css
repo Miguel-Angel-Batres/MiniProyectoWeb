@@ -198,7 +198,20 @@ hr {
     padding: 20px;
     cursor: pointer;
   }
-  
+  .dropdown-menu button {
+    margin: 0;
+    background-color: #131922;
+    width: 100%;
+    border: none;
+    height: auto;
+    text-align: left;
+    padding: 20px;
+    cursor: pointer;
+    color: #9e9ea4;
+  }
+    .dropdown-menu button:hover {
+        background-color: #3D4450;
+    }
   .dropdown-menu p:hover {
     background-color: #3D4450;
   }

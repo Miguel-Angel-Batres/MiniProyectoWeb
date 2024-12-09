@@ -45,3 +45,16 @@ function toggleDropdown(menuId) {
     const dropdownMenu = document.getElementById(menuId);
     dropdownMenu.classList.toggle("active");
   }
+  document.getElementById('profileButton').addEventListener('click', () => {
+    // Realiza el fetch para obtener la redirección
+    fetch('/profile')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          window.location.href = data.redirectUrl; 
+        } else {
+          alert('No se pudo cargar el perfil');
+        }
+      })
+      .catch((error) => console.error('Error al obtener perfil:', error));
+  });
