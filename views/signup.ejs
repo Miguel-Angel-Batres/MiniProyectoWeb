@@ -14,9 +14,9 @@
   <body>
     <div class="page-container">
       <div class="form-container">
-        <div class="form-group-background">
-          <h2>Sign Up</h2>
-          <form action="/signup" method="post" enctype="multipart/form-data">
+        <form action="/signup" method="post" enctype="multipart/form-data">
+          <div class="form-group-background">
+            <h2>Sign Up</h2>
             <div class="form-group">
               <label for="name">Name:</label>
               <input
@@ -68,11 +68,11 @@
                 <p>Already have an account? <a href="/login">Log In</a></p>
               </div>
             </div>
-          </form>
-          <div class="center-form">
-            <button type="submit">Sign Up</button>
+            <div class="center-form">
+              <button type="submit">Sign Up</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
     <script>
