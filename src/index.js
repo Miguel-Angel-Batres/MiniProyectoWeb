@@ -96,7 +96,15 @@ app.get('/home', async (req, res) => {
     }
 });
 
-
+async function main(){
+    try {
+        const nombresusuarios = await usermodel.find({}, 'name -_id');
+        console.log(nombresusuarios);
+    } catch (error) {
+        console.error(error);
+    }
+}
+main();
 
 app.post('/signup',upload.single('userimg'), async (req, res) => {
     try {
@@ -255,6 +263,31 @@ app.post('/inviteuser', async (req, res) => {
         res.status(500).send('Error al invitar usuario');
     }
 });
+
+async function main(){
+    try {
+        //funcion 1 
+        const usermiguel = await usermodel.findOne({ name: 'miguel' }, 'name _id');
+        console.log(usermiguel);
+        //funcion 2
+        const nuevousuario = new usermodel({ name: 'luis', password: '1234' });
+        await nuevousuario.save();
+        //funcion 3
+        const usuariostotales = await usermodel.countDocuments();
+        console.log(usuariostotales);
+        //funcion 4
+        const actualizarusuario = await usermodel.updateOne({ name: 'miguel' }, { name: 'miguelito' });
+        console.log(actualizarusuario);
+        //funcion 5
+        const proyectos = await Project.find({}, 'name -_id');
+        console.log(proyectos);
+        
+        
+    } catch (error) {
+        console.error(error);
+    }
+}
+main();
 app.post('/makeadmin', async (req, res) => {
     try {
         const { projectId, username } = req.body;
